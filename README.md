@@ -94,13 +94,9 @@ npm run serve
 
 ## Visual Tour
 
-Home Page
+News Feed Page
 
-<!-- ![Home Page]() -->
-
-All Categories
-
-<!-- ![All Categories]() -->
+<!-- ![News Feed Page]() -->
 
 Sign In Page
 
