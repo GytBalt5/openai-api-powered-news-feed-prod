@@ -7,7 +7,7 @@ from core.utils.dotenv import load_env, get_env_value
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
-VUE_FRONTEND_DIR = os.path.join(PROJECT_ROOT, "vue-frontend")
+VUE_FRONTEND_DIR = os.path.join(PROJECT_ROOT, "vue_frontend")
 VUE_STATIC_DIR = os.path.join(VUE_FRONTEND_DIR, "dist")
 
 # Load environment variables from the .env file
