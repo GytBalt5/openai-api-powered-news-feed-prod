@@ -2,7 +2,7 @@
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+    "version": "0.2.1",
     "configurations": [
         {
             "type": "chrome",
@@ -17,7 +17,7 @@
             "url": "http://127.0.0.1:8000"
         },
         {
-            "name": "Reset all databases",
+            "name": "ResetAllDatabases",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -25,7 +25,7 @@
             "justMyCode": false
         },
         {
-            "name": "Make migrations",
+            "name": "MakeMigrations",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -36,7 +36,7 @@
             "justMyCode": true
         },
         {
-            "name": "Migrate all databases",
+            "name": "MigrateAllDatabases",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -44,7 +44,7 @@
             "justMyCode": false
         },
         {
-            "name": "Databases initial setup",
+            "name": "DatabasesInitialSetup",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -52,7 +52,7 @@
             "justMyCode": false
         },
         {
-            "name": "Run server",
+            "name": "RunServer",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -64,7 +64,7 @@
             "justMyCode": true
         },
         {
-            "name": "Run core app tests",
+            "name": "RunCoreAppTests",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -75,7 +75,7 @@
             ]
         },
         {
-            "name": "Run users app tests",
+            "name": "RunUsersAppTests",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
@@ -86,18 +86,18 @@
             ]
         },
         {
-            "name": "Run news_feed app tests",
+            "name": "RunNewsFeedAppTests",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "test",
                 "news_feed",
             ]
         },
         {
-            "name": "Run articles app tests",
+            "name": "RunArticlesAppTests",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",

@@ -24,7 +24,7 @@ def get_multi_databases_config(env=None, secrets=None):
         load_env(env_path)
 
     db_engine = "django.db.backends.mysql"
-    db_name_articlefix = "_prod" if env == "prod" else "_dev"
+    db_name_postfix = "_prod" if env == "prod" else "_dev"
 
     db_user = _get_secret_for_db(secrets, "DB_USER")
     db_password = _get_secret_for_db(secrets, "DB_PASSWORD")
@@ -42,7 +42,7 @@ def get_multi_databases_config(env=None, secrets=None):
 
     return {
         alias: _get_db_value(
-            db_engine, name + db_name_articlefix, db_user, db_password, db_host, db_port
+            db_engine, name + db_name_postfix, db_user, db_password, db_host, db_port
         )
         for alias, name in db_names.items()
     }
