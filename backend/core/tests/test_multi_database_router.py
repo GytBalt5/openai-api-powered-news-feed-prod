@@ -11,44 +11,42 @@ from core.utils import (
 )
 
 
-def determine_expected_database_with_modulo_sharding(uid: int, shards: list):
-    # Create a mapping of shard index to shard name.
-    shard_mappings = {index: shard for index, shard in enumerate(shards)}
-    # Use modulo operation to determine the shard for the given UID.
-    return shard_mappings[uid % len(shards)]
+def determine_expected_database_based_on_modulo_sharding(uid: int, shards: list):
+   return shards[uid % len(shards)]
 
 
 class DBRouterShardingTestCase(TestCase):
-    def setUp(self):
-        """Set up the test environment with the router, expected database aliases, and shard count."""
-        self.article_router = ArticleRouter()
-        self.expected_db_alias = [ARTICLES_A_DB_ALIAS, ARTICLES_B_DB_ALIAS, ARTICLES_C_DB_ALIAS]
-        self.articles_amount = 22
+    @classmethod
+    def setUpTestData(cls):
+        """Set up data for the whole TestCase."""
+        cls.article_router = ArticleRouter()
+        cls.expected_db_alias = [ARTICLES_A_DB_ALIAS, ARTICLES_B_DB_ALIAS, ARTICLES_C_DB_ALIAS]
+        cls.articles_amount = 22
 
-    def test_should_be_equal_router_db_list_as_expected_list(self):
-        """Ensure that the router's database aliases correspond to the expected list."""
+    def test_db_alias_list(self):
+        """Router db list should match the expected list."""
         self.assertEqual(self.expected_db_alias, self.article_router.db_alias)
 
-    def test_should_router_select_correct_db_for_write(self):
-        """Check if the router correctly selects the database for write operations based on article UID."""
+    def test_db_for_write(self):
+        """Router should select the correct db for write."""
         for fake_uid in range(1, self.articles_amount + 1):
-            expected_db = determine_expected_database_with_modulo_sharding(
+            expected_db = determine_expected_database_based_on_modulo_sharding(
                 fake_uid, self.expected_db_alias
             )
             selected_db = self.article_router.db_for_write(Article, hints={"uid": fake_uid})
             self.assertEqual(expected_db, selected_db)
 
-    def test_should_router_select_correct_db_for_read(self):
-        """Check if the router correctly selects the database for read operations based on article UID."""
+    def test_db_for_read(self):
+        """Router should select the correct db for read."""
         for fake_uid in range(1, self.articles_amount + 1):
-            expected_db = determine_expected_database_with_modulo_sharding(
+            expected_db = determine_expected_database_based_on_modulo_sharding(
                 fake_uid, self.expected_db_alias
             )
             selected_db = self.article_router.db_for_read(Article, hints={"uid": fake_uid})
             self.assertEqual(expected_db, selected_db)
 
-    def test_should_router_have_correct_permissions_for_allow_migrate(self):
-        """Evaluate the router's migration permissions across various app labels and databases."""
+    def test_allow_migrate(self):
+        """Router should have correct permissions for allow_migrate."""
         # Check permissions for expected app labels.
         for db in self.expected_db_alias:
             self.assertTrue(self.article_router.allow_migrate(db=db, app_label="articles"))
@@ -67,8 +65,8 @@ class DBRouterShardingTestCase(TestCase):
             self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="news_feed"))
             self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="some_app"))
 
-    def test_should_router_select_correct_db_without_hints(self):
-        """Assess the router's default database selection in the absence of hints."""
+    def test_select_db_no_hints(self):
+        """Router should select the correct db without hints."""
         # Evaluate default selection for write operations.
         selected_db = self.article_router.db_for_write(Article)
         self.assertEqual(ARTICLES_A_DB_ALIAS, selected_db)

@@ -11,13 +11,17 @@ class ArticlesDBShardingBaseTestCase(TestCase):
 
     databases = "__all__"
 
+    @classmethod
+    def setUpTestData(cls):
+        """Set up data for the whole TestCase."""
+        cls.article_router = ArticleRouter()
+        cls.article_count = 22
+        cls.articles = []
+        cls.article_category_id = create_category("GENERAL-ARTICLE", "General articles").id
+        cls.user_id = create_super_user().id
+
     def setUp(self):
         """Set up test environment for each test method."""
-        self.article_router = ArticleRouter()
-        self.article_count = 22
-        self.articles = []
-        self.article_category_id = create_category("GENERAL-ARTICLE", "General articles").id
-        self.user_id = create_super_user().id
         for idx in range(1, self.article_count + 1):
             self.articles.append(
                 create_article(
@@ -37,8 +41,8 @@ class ArticlesDBShardingBaseTestCase(TestCase):
 
 class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
 
-    def test_should_created_articles_amount_be_as_expected_amount(self):
-        """Ensure the correct number of articles are created and distributed across databases."""
+    def test_articles_amount(self):
+        """Should create articles of amount as the expected amount."""
         self.assertEqual(self.article_count, len(self.articles))
         total_articles = sum(
             Article.objects.using(db_alias).count()
@@ -46,8 +50,8 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
         )
         self.assertEqual(self.article_count, total_articles)
 
-    def test_should_each_article_be_saved_to_expected_shard(self):
-        """Validate that each article is saved in the expected shard."""
+    def test_data_creation(self):
+        """Should save each article to the expected shard."""
         article_category_id = create_category("GENERAL-ARTICLE", "General articles").id
         user_id = create_super_user().id
         for idx in range(1, self.article_count):
@@ -62,8 +66,8 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
             expected_db = self.article_router.db_for_write(Article, hints={"uid": p.uid})
             self.assertEqual(expected_db, p._state.db)
 
-    def test_should_each_article_be_retrieved_from_expected_shard(self):
-        """Test if data can be correctly retrieved from the expected database."""
+    def test_data_retrieval(self):
+        """Should retrieve each article from the expected shard."""
         for article in self.articles:
             expected_db = self.article_router.db_for_read(Article, hints={"uid": article.uid})
             retrieved_article = (
@@ -72,8 +76,8 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
             self.assertIsNotNone(retrieved_article)
             self.assertEqual(article.uid, retrieved_article.uid)
 
-    def test_should_each_article_be_updated_in_expected_shard(self):
-        """Test if data can be correctly updated in the expected database."""
+    def test_data_update(self):
+        """Should update each article in the expected shard."""
         for article in self.articles:
             expected_title = f"Updated Title {article.uid}"
             article.title = expected_title
@@ -82,8 +86,8 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
             updated_article = Article.objects.using(expected_db).get(uid=article.uid)
             self.assertEqual(expected_title, updated_article.title)
 
-    def test_should_each_article_be_deleted_from_expected_shard(self):
-        """Test if data can be correctly deleted from the expected database."""
+    def test_data_deletion(self):
+        """Should delete each article from the expected shard."""
         for article in self.articles:
             article_uid = article.uid
             expected_db = self.article_router.db_for_read(Article, hints={"uid": article_uid})
@@ -100,28 +104,28 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
 
 class DBShardingCRUDAutoSelectingDBTestCase(ArticlesDBShardingBaseTestCase):
 
-    def test_should_created_articles_amount_be_as_expected_amount(self):
+    def test_articles_amount(self):
         """
         Note. DB should be auto selected.
-        Ensure the correct number of articles are created.
+        Should create the correct number of articles.
         """
         self.assertEqual(self.article_count, len(self.articles))
         self.assertEqual(self.article_count, Article.objects.count())
 
-    def test_should_each_article_be_retrieved_from_expected_shard(self):
+    def test_data_retrieval(self):
         """
         Note. DB should be auto selected.
-        Test if data can be correctly retrieved without explicitly selecting the database.
+        Should correctly retrieve articles.
         """
         for article in self.articles:
             retrieved_article = Article.objects.filter(uid=article.uid).first()
             self.assertIsNotNone(retrieved_article)
             self.assertEqual(article.uid, retrieved_article.uid)
 
-    def test_should_each_article_be_updated_in_expected_shard(self):
+    def test_data_update(self):
         """
         Note. DB should be auto selected.
-        Test if data can be correctly updated without explicitly selecting the database.
+        Should correctly update articles.
         """
         for article in self.articles:
             expected_title = f"Updated Title {article.uid}"
@@ -131,10 +135,10 @@ class DBShardingCRUDAutoSelectingDBTestCase(ArticlesDBShardingBaseTestCase):
             self.assertIsNotNone(updated_article)
             self.assertEqual(expected_title, updated_article.title)
 
-    def test_should_each_article_be_deleted_from_expected_shard(self):
+    def test_data_deletion(self):
         """
         Note. DB should be auto selected.
-        Test if data can be correctly deleted without explicitly selecting the database.
+        Should correctly delete articles.
         """
         for article in self.articles:
             article_uid = article.uid
