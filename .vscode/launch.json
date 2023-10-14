@@ -20,16 +20,16 @@
             "name": "Reset all databases",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/reset_all_dbs.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/reset_all_dbs.py",
             "justMyCode": false
         },
         {
             "name": "Make migrations",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "makemigrations"
             ],
@@ -39,24 +39,24 @@
             "name": "Migrate all databases",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/migrate_all_dbs.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/migrate_all_dbs.py",
             "justMyCode": false
         },
         {
             "name": "Databases initial setup",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/databases_initial_setup.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/databases_initial_setup.py",
             "justMyCode": false
         },
         {
             "name": "Run server",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "runserver"
             ],
@@ -67,8 +67,8 @@
             "name": "Run core app tests",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "test",
                 "core",
@@ -78,8 +78,8 @@
             "name": "Run users app tests",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "test",
                 "users",
@@ -100,8 +100,8 @@
             "name": "Run articles app tests",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/backend/manage.py",
+            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "test",
                 "articles",
