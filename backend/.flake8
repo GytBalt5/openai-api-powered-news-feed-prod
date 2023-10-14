@@ -1,0 +1,34 @@
+[flake8]
+max-line-length = 120
+exclude =
+  .idea,
+  cred,
+  nginx-proxy,
+  scripts,
+  venv,
+  .venv,
+  vol,
+  .dockerignore,
+  .env,
+  .env.sample,
+  .git,
+  .gitignore,
+  *.yml,
+  *.yaml,
+  Dockerfile,
+  Dockerfile.prod,
+  *.md,
+  requirements.txt,
+  __pycache__,
+  frontend,
+  static,
+  *.json,
+  workbox-config.js,
+  migrations,
+  all_migrations,
+  __init__.py
+ignore =
+  # W293 blank line contains whitespace.
+  W293,
+  # W503 line break after binary operator.
+  W503
