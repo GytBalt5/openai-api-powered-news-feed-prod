@@ -118,3 +118,6 @@ creds/
 
 *.db
 .DS_Store
+
+media/
+sqlite3/

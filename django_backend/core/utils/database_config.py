@@ -5,6 +5,8 @@ from core.utils.dotenv import load_env, get_env_value
 from core.utils.secrets import get_secret
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 AUTH_DB_ALIAS = "default"
 NEWS_FEED_DB_ALIAS = "news_feed_db"
 
@@ -19,8 +21,7 @@ def get_multi_databases_config(env=None, secrets=None):
     Return the DATABASES configuration based on the environment.
     """
     if secrets is None:
-        base_dir = Path(__file__).resolve().parent.parent.parent
-        env_path = os.path.join(base_dir, ".env")
+        env_path = os.path.join(BASE_DIR, ".env")
         load_env(env_path)
 
     db_engine = "django.db.backends.mysql"
@@ -48,6 +49,31 @@ def get_multi_databases_config(env=None, secrets=None):
     }
 
 
+def get_multi_databases_config_for_tests():
+    """
+    Return the DATABASES configuration for tests.
+    """
+    db_engine = "django.db.backends.sqlite3"
+
+    db_names = {
+        AUTH_DB_ALIAS: "test_auth_db",
+        NEWS_FEED_DB_ALIAS: f'test_{NEWS_FEED_DB_ALIAS}',
+        ARTICLES_A_DB_ALIAS: f'test_{ARTICLES_A_DB_ALIAS}',
+        ARTICLES_B_DB_ALIAS: f'test_{ARTICLES_B_DB_ALIAS}',
+        ARTICLES_C_DB_ALIAS: f'test_{ARTICLES_C_DB_ALIAS}',
+    }
+
+    dbs_dir = os.path.join(BASE_DIR, "sqlite3")
+
+    return {
+        alias: {
+            'ENGINE': db_engine,
+            'NAME': os.path.join(dbs_dir, name), 
+        }
+        for alias, name in db_names.items()
+    }
+
+
 def get_db_routers():
     return [
         "core.utils.router.AuthRouter",
@@ -64,9 +90,6 @@ def _get_db_value(engine, name, user, passwd, host, port):
         "PASSWORD": passwd,
         "HOST": host,
         "PORT": port,
-        "TEST": {
-            "NAME": f"test_{name}",
-        },
     }
 
 

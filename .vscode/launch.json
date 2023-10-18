@@ -64,48 +64,22 @@
             "justMyCode": true
         },
         {
-            "name": "RunCoreAppTests",
-            "type": "python",
+            "name": "RunVue",
+            "type": "node",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/django_backend/manage.py",
-            "args": [
-                "test",
-                "core",
+            "cwd": "${workspaceFolder}/vue_frontend",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "serve"
             ]
         },
         {
-            "name": "RunUsersAppTests",
+            "name": "SetupTestDatabases",
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/django_backend/manage.py",
-            "args": [
-                "test",
-                "users",
-            ]
-        },
-        {
-            "name": "RunNewsFeedAppTests",
-            "type": "python",
-            "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/django_backend/manage.py",
-            "args": [
-                "test",
-                "news_feed",
-            ]
-        },
-        {
-            "name": "RunArticlesAppTests",
-            "type": "python",
-            "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
-            "program": "${workspaceFolder}/django_backend/manage.py",
-            "args": [
-                "test",
-                "articles",
-            ]
+            "program": "${workspaceFolder}/django_backend/db_setup_for_tests.py",
         },
     ]
 }

@@ -1,5 +1,6 @@
 from core.utils.database_config import (
     get_multi_databases_config,
+    get_multi_databases_config_for_tests,
     get_db_routers,
     AUTH_DB_ALIAS,
     NEWS_FEED_DB_ALIAS,
