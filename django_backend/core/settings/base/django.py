@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "users",
     "news_feed",
     "articles",
+    "openaiapp",
 ]
 
 MIDDLEWARE = [
