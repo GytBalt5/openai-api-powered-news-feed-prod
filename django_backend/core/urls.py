@@ -32,7 +32,7 @@ urlpatterns = [
     path("graphql", csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
     # Catch-all pattern to serve your Vue app.
     re_path(
-        r'^.*', 
+        r"^.*",
         TemplateView.as_view(
             template_name=os.path.join(settings.VUE_STATIC_DIR, "index.html"),
         ),

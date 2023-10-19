@@ -12,7 +12,7 @@ from core.utils import (
 
 
 def determine_expected_database_based_on_modulo_sharding(uid: int, shards: list):
-   return shards[uid % len(shards)]
+    return shards[uid % len(shards)]
 
 
 class DBRouterShardingTestCase(TestCase):
@@ -20,7 +20,11 @@ class DBRouterShardingTestCase(TestCase):
     def setUpTestData(cls):
         """Set up data for the whole TestCase."""
         cls.article_router = ArticleRouter()
-        cls.expected_db_alias = [ARTICLES_A_DB_ALIAS, ARTICLES_B_DB_ALIAS, ARTICLES_C_DB_ALIAS]
+        cls.expected_db_alias = [
+            ARTICLES_A_DB_ALIAS,
+            ARTICLES_B_DB_ALIAS,
+            ARTICLES_C_DB_ALIAS,
+        ]
         cls.articles_amount = 22
 
     def test_db_alias_list(self):
@@ -33,7 +37,9 @@ class DBRouterShardingTestCase(TestCase):
             expected_db = determine_expected_database_based_on_modulo_sharding(
                 fake_uid, self.expected_db_alias
             )
-            selected_db = self.article_router.db_for_write(Article, hints={"uid": fake_uid})
+            selected_db = self.article_router.db_for_write(
+                Article, hints={"uid": fake_uid}
+            )
             self.assertEqual(expected_db, selected_db)
 
     def test_db_for_read(self):
@@ -42,28 +48,52 @@ class DBRouterShardingTestCase(TestCase):
             expected_db = determine_expected_database_based_on_modulo_sharding(
                 fake_uid, self.expected_db_alias
             )
-            selected_db = self.article_router.db_for_read(Article, hints={"uid": fake_uid})
+            selected_db = self.article_router.db_for_read(
+                Article, hints={"uid": fake_uid}
+            )
             self.assertEqual(expected_db, selected_db)
 
     def test_allow_migrate(self):
         """Router should have correct permissions for allow_migrate."""
         # Check permissions for expected app labels.
         for db in self.expected_db_alias:
-            self.assertTrue(self.article_router.allow_migrate(db=db, app_label="articles"))
-            self.assertTrue(self.article_router.allow_migrate(db=db, app_label="contenttypes"))
+            self.assertTrue(
+                self.article_router.allow_migrate(db=db, app_label="articles")
+            )
+            self.assertTrue(
+                self.article_router.allow_migrate(db=db, app_label="contenttypes")
+            )
             self.assertTrue(self.article_router.allow_migrate(db=db, app_label="admin"))
-            self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="users"))
-            self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="news_feed"))
-            self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="some_app"))
+            self.assertIsNone(
+                self.article_router.allow_migrate(db=db, app_label="users")
+            )
+            self.assertIsNone(
+                self.article_router.allow_migrate(db=db, app_label="news_feed")
+            )
+            self.assertIsNone(
+                self.article_router.allow_migrate(db=db, app_label="some_app")
+            )
 
         # Check permissions for databases not related to article operations.
         for db in [AUTH_DB_ALIAS, NEWS_FEED_DB_ALIAS, "some_db"]:
-            self.assertFalse(self.article_router.allow_migrate(db=db, app_label="articles"))
-            self.assertFalse(self.article_router.allow_migrate(db=db, app_label="contenttypes"))
-            self.assertFalse(self.article_router.allow_migrate(db=db, app_label="admin"))
-            self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="users"))
-            self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="news_feed"))
-            self.assertIsNone(self.article_router.allow_migrate(db=db, app_label="some_app"))
+            self.assertFalse(
+                self.article_router.allow_migrate(db=db, app_label="articles")
+            )
+            self.assertFalse(
+                self.article_router.allow_migrate(db=db, app_label="contenttypes")
+            )
+            self.assertFalse(
+                self.article_router.allow_migrate(db=db, app_label="admin")
+            )
+            self.assertIsNone(
+                self.article_router.allow_migrate(db=db, app_label="users")
+            )
+            self.assertIsNone(
+                self.article_router.allow_migrate(db=db, app_label="news_feed")
+            )
+            self.assertIsNone(
+                self.article_router.allow_migrate(db=db, app_label="some_app")
+            )
 
     def test_select_db_no_hints(self):
         """Router should select the correct db without hints."""

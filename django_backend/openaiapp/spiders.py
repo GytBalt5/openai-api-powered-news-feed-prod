@@ -9,11 +9,15 @@ class NewsSpider(CrawlSpider):
     def __init__(self, domain=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.allowed_domains = [domain] if domain else []
-        self.start_urls = kwargs.get('start_urls', [])
+        self.start_urls = kwargs.get("start_urls", [])
 
         # Define the rules for link extraction and crawling.
         self.rules = (
-            Rule(LinkExtractor(allow_domains=self.allowed_domains), callback=self.parse, follow=True),
+            Rule(
+                LinkExtractor(allow_domains=self.allowed_domains),
+                callback=self.parse,
+                follow=True,
+            ),
         )
 
         self.articles = []
@@ -21,12 +25,12 @@ class NewsSpider(CrawlSpider):
     def parse(self, response):
         # Check if the response URL's domain is in the allowed domains.
         if any(domain in response.url for domain in self.allowed_domains):
-            soup = BeautifulSoup(response.text, 'html.parser')
+            soup = BeautifulSoup(response.text, "html.parser")
             # Extract and clean the text from the response.
-            text = ' '.join(soup.stripped_strings)
+            text = " ".join(soup.stripped_strings)
 
             article = {
-                'url': response.url,
-                'text': text,
+                "url": response.url,
+                "text": text,
             }
             self.articles.append(article)

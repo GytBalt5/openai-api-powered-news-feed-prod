@@ -7,7 +7,6 @@ from openaiapp.utils import tokenize_text
 
 
 class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
-
     def test_should_crawl_website_and_return_all_text(self):
         """Should crawl the website and linked HTML documents within the same domain."""
         domain = "example.com"
@@ -20,10 +19,26 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
 
         # Create mock HTTP responses with sample HTML content.
         responses = [
-            HtmlResponse(url=url, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
-            HtmlResponse(url=link1, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
-            HtmlResponse(url=link2, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
-            HtmlResponse(url=other_link, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
+            HtmlResponse(
+                url=url,
+                body=b"<html><body><p>This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
+            HtmlResponse(
+                url=link1,
+                body=b"<html><body><p>This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
+            HtmlResponse(
+                url=link2,
+                body=b"<html><body><p>This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
+            HtmlResponse(
+                url=other_link,
+                body=b"<html><body><p>This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
         ]
 
         # Call the spider's parse methods for mock responses.
@@ -31,20 +46,32 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
             spider.parse(response)
 
         expected_articles = [
-            {'url': url, 'text': 'This is some sample text.'},
-            {'url': link1, 'text': 'This is some sample text.'},
-            {'url': link2, 'text': 'This is some sample text.'},
+            {"url": url, "text": "This is some sample text."},
+            {"url": link1, "text": "This is some sample text."},
+            {"url": link2, "text": "This is some sample text."},
         ]
         self.assertEqual(expected_articles, spider.articles)
 
     def test_should_text_be_tokenized(self):
         """Should break down the text into tokens (words or punctuation) and returns them as a list."""
-        sample_text = "Fact-based news, exclusive video footage, photos and updated maps."
+        sample_text = (
+            "Fact-based news, exclusive video footage, photos and updated maps."
+        )
         tokens_list = tokenize_text(sample_text)
         expected_tokens_list = [
-            'Fact', '-based', ' news', ',', 
-            ' exclusive', ' video', ' footage', ',', 
-            ' photos', ' and', ' updated', ' maps', '.'
+            "Fact",
+            "-based",
+            " news",
+            ",",
+            " exclusive",
+            " video",
+            " footage",
+            ",",
+            " photos",
+            " and",
+            " updated",
+            " maps",
+            ".",
         ]
 
         self.assertEqual(expected_tokens_list, tokens_list)

@@ -30,7 +30,12 @@ def db_init_setup(user_id):
     a_article_category_id = create_category("A-ART", "AArt db articles").id
     b_article_category_id = create_category("B-ART", "BArt db articles").id
     c_article_category_id = create_category("C-ART", "CArt db articles").id
-    print("category ids: ", a_article_category_id, b_article_category_id, c_article_category_id)
+    print(
+        "category ids: ",
+        a_article_category_id,
+        b_article_category_id,
+        c_article_category_id,
+    )
 
     for idx, category_id in enumerate(
         [

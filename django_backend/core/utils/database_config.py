@@ -57,18 +57,18 @@ def get_multi_databases_config_for_tests():
 
     db_names = {
         AUTH_DB_ALIAS: "test_auth_db",
-        NEWS_FEED_DB_ALIAS: f'test_{NEWS_FEED_DB_ALIAS}',
-        ARTICLES_A_DB_ALIAS: f'test_{ARTICLES_A_DB_ALIAS}',
-        ARTICLES_B_DB_ALIAS: f'test_{ARTICLES_B_DB_ALIAS}',
-        ARTICLES_C_DB_ALIAS: f'test_{ARTICLES_C_DB_ALIAS}',
+        NEWS_FEED_DB_ALIAS: f"test_{NEWS_FEED_DB_ALIAS}",
+        ARTICLES_A_DB_ALIAS: f"test_{ARTICLES_A_DB_ALIAS}",
+        ARTICLES_B_DB_ALIAS: f"test_{ARTICLES_B_DB_ALIAS}",
+        ARTICLES_C_DB_ALIAS: f"test_{ARTICLES_C_DB_ALIAS}",
     }
 
     dbs_dir = os.path.join(BASE_DIR, "sqlite3")
 
     return {
         alias: {
-            'ENGINE': db_engine,
-            'NAME': os.path.join(dbs_dir, name), 
+            "ENGINE": db_engine,
+            "NAME": os.path.join(dbs_dir, name),
         }
         for alias, name in db_names.items()
     }

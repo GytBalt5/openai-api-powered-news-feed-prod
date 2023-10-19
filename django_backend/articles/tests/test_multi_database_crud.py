@@ -8,7 +8,6 @@ from core.utils.router import ArticleRouter
 
 
 class ArticlesDBShardingBaseTestCase(TestCase):
-
     databases = "__all__"
 
     @classmethod
@@ -17,7 +16,9 @@ class ArticlesDBShardingBaseTestCase(TestCase):
         cls.article_router = ArticleRouter()
         cls.article_count = 22
         cls.articles = []
-        cls.article_category_id = create_category("GENERAL-ARTICLE", "General articles").id
+        cls.article_category_id = create_category(
+            "GENERAL-ARTICLE", "General articles"
+        ).id
         cls.user_id = create_super_user().id
 
     def setUp(self):
@@ -40,7 +41,6 @@ class ArticlesDBShardingBaseTestCase(TestCase):
 
 
 class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
-
     def test_articles_amount(self):
         """Should create articles of amount as the expected amount."""
         self.assertEqual(self.article_count, len(self.articles))
@@ -63,13 +63,17 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
                 category_id=article_category_id,
                 user_id=user_id,
             )
-            expected_db = self.article_router.db_for_write(Article, hints={"uid": p.uid})
+            expected_db = self.article_router.db_for_write(
+                Article, hints={"uid": p.uid}
+            )
             self.assertEqual(expected_db, p._state.db)
 
     def test_data_retrieval(self):
         """Should retrieve each article from the expected shard."""
         for article in self.articles:
-            expected_db = self.article_router.db_for_read(Article, hints={"uid": article.uid})
+            expected_db = self.article_router.db_for_read(
+                Article, hints={"uid": article.uid}
+            )
             retrieved_article = (
                 Article.objects.using(expected_db).filter(uid=article.uid).first()
             )
@@ -82,7 +86,9 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
             expected_title = f"Updated Title {article.uid}"
             article.title = expected_title
             article.save()
-            expected_db = self.article_router.db_for_read(Article, hints={"uid": article.uid})
+            expected_db = self.article_router.db_for_read(
+                Article, hints={"uid": article.uid}
+            )
             updated_article = Article.objects.using(expected_db).get(uid=article.uid)
             self.assertEqual(expected_title, updated_article.title)
 
@@ -90,7 +96,9 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
         """Should delete each article from the expected shard."""
         for article in self.articles:
             article_uid = article.uid
-            expected_db = self.article_router.db_for_read(Article, hints={"uid": article_uid})
+            expected_db = self.article_router.db_for_read(
+                Article, hints={"uid": article_uid}
+            )
             article.delete()
             self.assertFalse(
                 Article.objects.using(expected_db).filter(uid=article_uid).exists()
@@ -103,7 +111,6 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
 
 
 class DBShardingCRUDAutoSelectingDBTestCase(ArticlesDBShardingBaseTestCase):
-
     def test_articles_amount(self):
         """
         Note. DB should be auto selected.
