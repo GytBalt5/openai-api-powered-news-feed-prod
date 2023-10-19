@@ -7,7 +7,7 @@ from openaiapp.spiders import NewsSpider
 
 class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
 
-     def test_should_crawl_website_and_return_all_text(self):
+    def test_should_crawl_website_and_return_all_text(self):
         """Should crawl the website and linked HTML documents within the same domain."""
         domain = "example.com"
         url = f"http://{domain}"
@@ -36,9 +36,17 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
         ]
         self.assertEqual(expected_articles, spider.articles)
 
-    # def test_should_text_be_tokenized(self):
-    #     """Should break down the text into tokens (words or punctuation) and returns them as a list."""
-    #     pass
+    def test_should_text_be_tokenized(self):
+        """Should break down the text into tokens (words or punctuation) and returns them as a list."""
+        sample_text = "Fact-based news, exclusive video footage, photos and updated maps."
+        tokens_list = tokenize_text(sample_text)
+        expected_tokens_list = [
+            'Fact', '-based', ' news', ',', 
+            ' exclusive', ' video', ' footage', ',', 
+            ' photos', ' and', ' updated', ' maps', '.'
+        ]
+
+        self.assertEqual(expected_tokens_list, tokens_list)
 
     # def test_should_from_tokens_create_embeddings(self):
     #     "Should create embeddings for a list of tokens."
