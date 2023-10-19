@@ -3,6 +3,7 @@ from django.test import TestCase
 from scrapy.http import HtmlResponse
 
 from openaiapp.spiders import NewsSpider
+from openaiapp.utils import tokenize_text
 
 
 class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
