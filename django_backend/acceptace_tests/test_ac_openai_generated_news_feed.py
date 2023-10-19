@@ -1,45 +1,40 @@
 from django.test import TestCase
 
 from scrapy.http import HtmlResponse
-from scrapy.utils.test import get_crawler
 
 from openaiapp.spiders import NewsSpider
 
 
 class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
 
-    def test_should_crawl_website_and_return_all_text(self):
-        """Should also crawl that website linked HTML documents (the same domain)."""
+     def test_should_crawl_website_and_return_all_text(self):
+        """Should crawl the website and linked HTML documents within the same domain."""
         domain = "example.com"
-        url = "http://www.example.com"
-
-        link1 = "http://www.example.com/page1.html"
-        link2 = "/page2.html"
+        url = f"http://{domain}"
+        link1 = f"http://{domain}/page1.html"
+        link2 = f"http://{domain}/page2.html"
         other_link = "http://www.other.com"
 
-        spider = NewsSpider(domain=domain)
-        spider.start_urls = [url]
+        spider = NewsSpider(domain=domain, start_urls=[url])
 
-        crawler = get_crawler(spidercls=type(spider))
-        crawler.spider = spider
+        # Create mock HTTP responses with sample HTML content.
+        responses = [
+            HtmlResponse(url=url, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
+            HtmlResponse(url=link1, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
+            HtmlResponse(url=link2, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
+            HtmlResponse(url=other_link, body=b"<html><body><p>This is some sample text.</p></body></html>", encoding='utf-8'),
+        ]
 
-        # Create a mock HTTP response with some sample HTML content.
-        body1 = "<html><body><p>This is some sample text.</p></body></html>"
-        response1 = HtmlResponse(url=url, body=body1)
-        body2 = "<html><body><p>This is some sample text.</p></body></html>"
-        response2 = HtmlResponse(url=link1, body=body2)
-        body3 = "<html><body><p>This is some sample text.</p></body></html>"
-        response3 = HtmlResponse(url=link2, body=body3)
-        other_link_body = "<html><body><p>This is some sample text.</p></body></html>"
-        response_from_other = HtmlResponse(url=other_link, body=other_link_body)
+        # Call the spider's parse methods for mock responses.
+        for response in responses:
+            spider.parse(response)
 
-        # Call the spider's parse method with the mock response.
-        spider.parse(response1)
-        spider.parse(response2)
-        spider.parse(response3)
-        spider.parse(response_from_other)  # from other domain
-
-        self.assertEqual(len(spider.text), 23 * 3)
+        expected_articles = [
+            {'url': url, 'text': 'This is some sample text.'},
+            {'url': link1, 'text': 'This is some sample text.'},
+            {'url': link2, 'text': 'This is some sample text.'},
+        ]
+        self.assertEqual(expected_articles, spider.articles)
 
     # def test_should_text_be_tokenized(self):
     #     """Should break down the text into tokens (words or punctuation) and returns them as a list."""
