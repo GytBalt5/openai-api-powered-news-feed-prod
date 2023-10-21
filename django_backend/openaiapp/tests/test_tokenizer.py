@@ -11,20 +11,6 @@ class TokenizerTestCase(TestCase):
             "Fact-based news, exclusive video footage, photos and updated maps."
         )
         tokens_list = tokenize_text(sample_text)
-        expected_tokens_list = [
-            "Fact",
-            "-based",
-            " news",
-            ",",
-            " exclusive",
-            " video",
-            " footage",
-            ",",
-            " photos",
-            " and",
-            " updated",
-            " maps",
-            ".",
-        ]
+        expected_tokens_list = [17873, 6108, 3754, 11, 14079, 2835, 22609, 11, 7397, 323, 6177, 14370, 13]
 
         self.assertEqual(expected_tokens_list, tokens_list)
