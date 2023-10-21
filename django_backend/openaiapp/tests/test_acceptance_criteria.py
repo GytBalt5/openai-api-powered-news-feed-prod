@@ -13,6 +13,9 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
         url = f"http://{domain}"
         link1 = f"http://{domain}/page1.html"
         link2 = f"http://{domain}/page2.html"
+        link3 = "/page3.html"
+        sharp_link = "#"
+        mailto_link = "mailto:johnbrawo1231@gg123mail.com"
         other_link = "http://www.other.com"
 
         spider = NewsSpider(domain=domain, start_urls=[url])
@@ -35,8 +38,23 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
                 encoding="utf-8",
             ),
             HtmlResponse(
-                url=other_link,
+                url=link3,
                 body=b"<html><body><p>This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
+            HtmlResponse(
+                url=sharp_link,
+                body=b"<html><body><p>[BAD-#]This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
+            HtmlResponse(
+                url=mailto_link,
+                body=b"<html><body><p>[BAD-mailto]This is some sample text.</p></body></html>",
+                encoding="utf-8",
+            ),
+            HtmlResponse(
+                url=other_link,
+                body=b"<html><body><p>[BAD-other]This is some sample text.</p></body></html>",
                 encoding="utf-8",
             ),
         ]
@@ -49,6 +67,7 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
             {"url": url, "text": "This is some sample text."},
             {"url": link1, "text": "This is some sample text."},
             {"url": link2, "text": "This is some sample text."},
+            {"url": link3, "text": "This is some sample text."},
         ]
         self.assertEqual(expected_articles, spider.articles)
 
