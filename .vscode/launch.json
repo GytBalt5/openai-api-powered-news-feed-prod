@@ -20,7 +20,7 @@
             "name": "ResetAllDatabases",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
             "program": "${workspaceFolder}/django_backend/reset_all_dbs.py",
             "justMyCode": false
         },
@@ -28,7 +28,7 @@
             "name": "MakeMigrations",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
             "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "makemigrations"
@@ -39,7 +39,7 @@
             "name": "MigrateAllDatabases",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
             "program": "${workspaceFolder}/django_backend/migrate_all_dbs.py",
             "justMyCode": false
         },
@@ -47,7 +47,7 @@
             "name": "DatabasesInitialSetup",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
             "program": "${workspaceFolder}/django_backend/databases_initial_setup.py",
             "justMyCode": false
         },
@@ -55,7 +55,7 @@
             "name": "RunServer",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
             "program": "${workspaceFolder}/django_backend/manage.py",
             "args": [
                 "runserver"
@@ -78,7 +78,7 @@
             "name": "SetupTestDatabases",
             "type": "python",
             "request": "launch",
-            "python": "${workspaceFolder}/django_backend/.venv/Scripts/python",
+            "python": "${workspaceFolder}/.venv/Scripts/python",
             "program": "${workspaceFolder}/django_backend/db_setup_for_tests.py",
         },
     ]
