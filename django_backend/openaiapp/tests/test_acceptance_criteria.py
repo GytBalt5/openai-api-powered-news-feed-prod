@@ -16,47 +16,57 @@ class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
         link3 = "/page3.html"
         sharp_link = "#"
         mailto_link = "mailto:johnbrawo1231@gg123mail.com"
+        js_link = f"/file.js"
         other_link = "http://www.other.com"
 
         spider = NewsSpider(domain=domain, start_urls=[url])
 
+        # Define URLs and corresponding bodies.
+        url_bodies = [
+            (
+                url,
+                "<html><body><p>This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+            (
+                link1,
+                "<html><body><p>This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+            (
+                link2,
+                "<html><body><p>This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+            (
+                link3,
+                "<html><body><p>This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+            (
+                sharp_link,
+                "<html><body><p>[BAD-#]This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+            (
+                mailto_link,
+                "<html><body><p>[BAD-mailto]This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+            (js_link, "/*[BAD-js]*/", {"Content-Type": "file/js"}),
+            (
+                other_link,
+                "<html><body><p>[BAD-other]This is some sample text.</p></body></html>",
+                {"Content-Type": "text/html"},
+            ),
+        ]
+
         # Create mock HTTP responses with sample HTML content.
         responses = [
             HtmlResponse(
-                url=url,
-                body=b"<html><body><p>This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
-            HtmlResponse(
-                url=link1,
-                body=b"<html><body><p>This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
-            HtmlResponse(
-                url=link2,
-                body=b"<html><body><p>This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
-            HtmlResponse(
-                url=link3,
-                body=b"<html><body><p>This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
-            HtmlResponse(
-                url=sharp_link,
-                body=b"<html><body><p>[BAD-#]This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
-            HtmlResponse(
-                url=mailto_link,
-                body=b"<html><body><p>[BAD-mailto]This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
-            HtmlResponse(
-                url=other_link,
-                body=b"<html><body><p>[BAD-other]This is some sample text.</p></body></html>",
-                encoding="utf-8",
-            ),
+                url=url, body=body.encode("utf-8"), headers=headers, encoding="utf-8"
+            )
+            for url, body, headers in url_bodies
         ]
 
         # Call the spider's parse methods for mock responses.

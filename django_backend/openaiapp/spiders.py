@@ -23,14 +23,18 @@ class NewsSpider(CrawlSpider):
         self.articles = []
 
     def parse(self, response):
+        # Ensure the response is of type HTML.
+        if not response.headers.get("Content-Type").startswith(b"text/html"):
+            return
+        url = response.url
         # Check if the response URL's domain is in the allowed domains.
-        if any(domain in response.url for domain in self.allowed_domains):
-            soup = BeautifulSoup(response.text, "html.parser")
+        if any(domain in url for domain in self.allowed_domains) or url.startswith("/"):
             # Extract and clean the text from the response.
+            soup = BeautifulSoup(response.text, "html.parser")
             text = " ".join(soup.stripped_strings)
 
             article = {
-                "url": response.url,
+                "url": url,
                 "text": text,
             }
             self.articles.append(article)

@@ -11,9 +11,12 @@ class CrawlerTestCase(TestCase):
         domain = "example.com"
         url = f"http://www.{domain}"
         body = "<html><body><p>This is some sample text.</p></body></html>"
+        headers = {"Content-Type": "text/html"}
 
         # Creating a mock HTTP response with the sample HTML content.
-        response = HtmlResponse(url=url, body=body.encode("utf-8"), encoding="utf-8")
+        response = HtmlResponse(
+            url=url, body=body.encode("utf-8"), headers=headers, encoding="utf-8"
+        )
         spider = NewsSpider(domain=domain, start_urls=[url])
 
         spider.parse(response)
