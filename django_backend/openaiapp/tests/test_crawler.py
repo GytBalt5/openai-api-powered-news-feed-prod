@@ -6,8 +6,12 @@ from openaiapp.spiders import NewsSpider
 
 
 class CrawlerTestCase(TestCase):
+    def test_should_raise_unsupported_error_for_parsing_not_html(self):
+        raise NotImplementedError
+
     def test_should_spider_extract_from_html_response_all_text(self):
         """Test whether the spider correctly extracts all text from an HTML response."""
+
         domain = "example.com"
         url = f"http://www.{domain}"
         body = "<html><body><p>This is some sample text.</p></body></html>"
@@ -23,12 +27,10 @@ class CrawlerTestCase(TestCase):
 
         expected_articles = [{"url": url, "text": "This is some sample text."}]
         self.assertEqual(expected_articles, spider.articles)
-    
-    def test_should_raise_unsupported_error_for_parsing_not_html(self):
-        raise NotImplementedError
 
     def test_should_crawl_website_and_return_all_text(self):
         """Should crawl the website and linked HTML documents within the same domain."""
+        
         domain = "example.com"
         url = f"http://{domain}"
         link1 = f"http://{domain}/page1.html"
