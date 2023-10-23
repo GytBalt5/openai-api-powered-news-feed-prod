@@ -4,18 +4,22 @@ Harness the power of OpenAI's API with a state-of-the-art news-feed app. This ro
 
 ## 🌟 Key Features
 
-- **Advanced Database Management**: The application features a foundational database sharding configuration, ensuring efficient data distribution and optimal performance.
+- **Advanced Database Management Starter**: The application features a foundational database sharding configuration, ensuring efficient data distribution and optimal performance.
+- **Improved Django settings configuration**.
+- **Scripts for project management**.
+- **Python testing configuration and Jupyter notebooks for code analysis**.
+- **Robust Testing**: My commitment to reliability is unwavering.
 
 ## 🚀 What's Next?
 
-- **OpenAI Integration**: Stay tuned for upcoming features that will leverage OpenAI's API to dynamically generate news feeds.
-- **Google Authentication**: I am working on integrating Google-based registration and login for a smoother user experience.
-- **Robust Testing**: My commitment to reliability is unwavering. Expect an enhanced auto-testing suite soon.
+- **OpenAI Integration**: Stay tuned for upcoming features that will leverage OpenAI's API to daily generate news feeds.
+- **Google Authentication**: Stay tuned for the upcoming integration of Google-based registration and login for a smoother user experience.
+- **Robust Testing**: More tests will be soon.
 - **Continuous Improvements**: I am always on the lookout for areas of improvement and am actively working on bug fixes.
 
 ## 🔧 Installation & Setup
 
-### Google Cloud Storage:
+### Google Cloud Storage [OPTIONAL]:
 
 To utilize Google Cloud (GC) for image storage:
 
@@ -30,19 +34,17 @@ mkdir creds
 ```
 
 Backend Configuration (Linux).
-Navigate to the backend directory and initiate a virtual environment:
+Initiate a virtual environment:
 
 ```bash
-cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
 Backend Configuration (Windows).
-Navigate to the backend directory and initiate a virtual environment:
+Initiate a virtual environment:
 
 ```bash
-cd backend
 python -m venv .venv 
 .venv\Scripts\activate
 ```
@@ -56,6 +58,7 @@ pip install -r requirements.txt
 Reset all databases.
 
 ```bash
+cd django_backend
 python reset_all_dbs.py
 ```
 
@@ -79,10 +82,10 @@ python manage.py runserver
 ```
 
 Frontend Configuration.
-Navigate to the frontend directory and install the required packages:
+Navigate to the frontend directory from the root and install the required packages:
 
 ```bash
-cd vue-frontend
+cd vue_frontend
 npm install
 ```
 
