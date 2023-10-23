@@ -18,7 +18,7 @@ def split_text_into_chunks(text: str, max_tokens: int) -> list[str]:
         
         _, next_size = sentences_token_amounts[idx + 1] if idx < len(sentences_token_amounts) - 1 else ("", -1)
 
-        accumulative_chunk += sentence
+        accumulative_chunk += f" {sentence}" if accumulative_chunk else sentence
         accumulative_size += size
 
         if next_size == -1:
