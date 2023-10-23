@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 
-class OpenAIGeneratedNewsFeedAcceptanceTestCase(TestCase):
+class OpenAINewsFeedGeneratorAcceptanceTestCase(TestCase):
     def test_should_return_news_feed(self):
         """Should return generated news feed."""
         # TODO.

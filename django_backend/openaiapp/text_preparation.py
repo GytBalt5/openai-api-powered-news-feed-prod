@@ -1,8 +1,12 @@
 import re
 
-import pandas as pd
+from pandas import DataFrame
 
 from openaiapp.tokenizers import tokenize_text
+
+
+MIN_TOKENS = 10
+MAX_TOKENS = 500
 
 
 def split_text_into_chunks(text: str, max_tokens: int) -> list[str]:
@@ -32,7 +36,7 @@ def split_text_into_chunks(text: str, max_tokens: int) -> list[str]:
     return chunks
 
 
-def shorten_texts_of_df(df, max_tokens: int) -> pd.DataFrame:
+def shorten_texts_of_df(df: DataFrame, max_tokens: int) -> DataFrame:
     """Shorten the texts based on the maximum token limit."""
     
     _check_max_tokens_amount(max_tokens)
@@ -41,7 +45,7 @@ def shorten_texts_of_df(df, max_tokens: int) -> pd.DataFrame:
     # Loop through the DataFrame.
     for _, row in df.iterrows():
         
-        text = row['text']
+        text = row["text"]
         
         # Skip rows where the text is None.
         if text is None:
@@ -53,13 +57,11 @@ def shorten_texts_of_df(df, max_tokens: int) -> pd.DataFrame:
         else:
             shortened_texts.append(text)
 
-    df = pd.DataFrame(shortened_texts, columns=["text"])
-
-    return df
+    return DataFrame(data=shortened_texts, columns=["text"])
 
 
 def _check_max_tokens_amount(max_tokens: int):
-    if max_tokens < 10:
+    if max_tokens < MIN_TOKENS:
         raise ValueError(f"Tokens amount must be greater or equal to 10. Passed {max_tokens} max_tokens.")
-    elif max_tokens > 500:
+    elif max_tokens > MAX_TOKENS:
         raise ValueError(f"Tokens amount must be less or equal to 500. Passed {max_tokens} max_tokens.")
