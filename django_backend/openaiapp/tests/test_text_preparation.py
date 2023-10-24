@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from pandas import DataFrame
 
-from openaiapp.text_preparation import split_text_into_chunks, shorten_texts_of_df
+from openaiapp.text_preparation import generate_each_text_of_df_tokens_amount, split_text_into_chunks, shorten_texts_of_df
 
 
 class TextIntoChunksSplitterTestCase(TestCase):
@@ -75,8 +75,20 @@ class DataFrameTextChunkierTestCase(TestCase):
             columns=["text"],
         )
 
-    def test_should_shorten_texts_of_df(self):
+    def test_should_correctly_generate_each_text_amount_of_tokens(self):
+        df = generate_each_text_of_df_tokens_amount(df=self.sample_df)
+        expected_df = DataFrame(
+            data=[
+                "Fact-based news, exclusive video footage, photos and updated maps. Abra kadabra abra kadabra YEAH. Fact-based news, exclusive video footage, photos and updated maps. Abra kadabra abra kadabra YEAH. Fact-based news, exclusive video footage, photos and updated maps. Abra kadabra abra kadabra YEAH."
+            ],
+            columns=["text"],
+        )
+        expected_df["n_tokens"] = 75
 
+        self.assertEqual(type(df), DataFrame)
+        self.assertEqual(expected_df.to_dict(), df.to_dict())
+
+    def test_should_shorten_texts_of_df(self):
         max_tokens = 30
         shortened_df = shorten_texts_of_df(
             df=self.sample_df, 
@@ -95,7 +107,6 @@ class DataFrameTextChunkierTestCase(TestCase):
         self.assertEqual(expected_df.to_dict(), shortened_df.to_dict())
 
     def test_should_max_tokens_be_greater_or_equal(self):
-
         max_tokens = 0
         with self.assertRaises(ValueError) as context:
             shorten_texts_of_df(
@@ -105,7 +116,6 @@ class DataFrameTextChunkierTestCase(TestCase):
         self.assertEqual(str(context.exception), f"Tokens amount must be greater or equal to 10. Passed {max_tokens} max_tokens.")
 
     def test_should_max_tokens_be_less_or_equal(self):
-
         max_tokens = 501
         with self.assertRaises(ValueError) as context:
             shorten_texts_of_df(

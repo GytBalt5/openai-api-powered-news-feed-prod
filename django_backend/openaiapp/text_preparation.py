@@ -60,6 +60,11 @@ def shorten_texts_of_df(df: DataFrame, max_tokens: int) -> DataFrame:
     return DataFrame(data=shortened_texts, columns=["text"])
 
 
+def generate_each_text_of_df_tokens_amount(df) -> DataFrame:
+    df['n_tokens'] = df.text.apply(lambda x: len(tokenize_text(x)))
+    return df
+
+
 def _check_max_tokens_amount(max_tokens: int):
     if max_tokens < MIN_TOKENS:
         raise ValueError(f"Tokens amount must be greater or equal to 10. Passed {max_tokens} max_tokens.")
