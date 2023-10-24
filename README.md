@@ -2,6 +2,8 @@
 
 Harness the power of OpenAI's API with a state-of-the-art news-feed app. This robust multi-database solution is meticulously crafted using Django, Vue.js, and GraphQL, offering a scalable foundation for your projects.
 
+- **Python 3.11**
+
 ## 🌟 Key Features
 
 - **Advanced Database Management Starter**: The application features a foundational database sharding configuration, ensuring efficient data distribution and optimal performance.
