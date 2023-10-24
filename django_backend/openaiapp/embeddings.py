@@ -18,3 +18,6 @@ def create_embeddings_of_df_text(df: DataFrame):
 def flatten_embeddings_of_df(df: DataFrame):
     df['embeddings'] = df['embeddings'].apply(np.array)
     return df
+
+
+# TODO. Should be saved flatten embeddings of df to the vector database in future.
