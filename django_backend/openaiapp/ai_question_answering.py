@@ -21,16 +21,17 @@ def create_context(question, df, max_len=CONTEXT_MAX_LEN):
     q_embeddings = create_embedding(input=question)
 
     # Get the distances from the embeddings.
-    df['distances'] = distances_from_embeddings(q_embeddings, df['embeddings'].values, distance_metric='cosine')
+    df["distances"] = distances_from_embeddings(
+        q_embeddings, df["embeddings"].values, distance_metric="cosine"
+    )
 
     returns = []
     cur_len = 0
 
     # Sort by distance and add the text to the context until the context is too long.
-    for _, row in df.sort_values('distances', ascending=True).iterrows():
-
+    for _, row in df.sort_values("distances", ascending=True).iterrows():
         # Add the length of the text to the current length.
-        cur_len += row['n_tokens'] + 4
+        cur_len += row["n_tokens"] + 4
 
         # If the context is too long, break.
         if cur_len > max_len:
@@ -52,16 +53,12 @@ def answer_question(
     max_len=1800,
     debug=False,
     max_tokens=150,
-    stop_sequence=None
+    stop_sequence=None,
 ):
     """
     Answer a question based on the most similar context from the dataframe texts.
     """
-    context = create_context(
-        question,
-        df,
-        max_len=max_len
-    )
+    context = create_context(question, df, max_len=max_len)
     # If debug, print the raw model response.
     if debug:
         print("Context:\n" + context)

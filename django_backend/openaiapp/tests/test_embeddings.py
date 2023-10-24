@@ -26,7 +26,7 @@ class EmbeddingsTestCase(TestCase):
         embedding_list = df["embeddings"].tolist()
 
         # If pass than it creates embeddings for each text chunk.
-        self.assertEqual(len(self.texts), len(embedding_list))  
+        self.assertEqual(len(self.texts), len(embedding_list))
 
         # General checks.
         self.assertIsInstance(text_list, list)

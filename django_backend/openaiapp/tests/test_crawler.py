@@ -30,7 +30,7 @@ class CrawlerTestCase(TestCase):
 
     def test_should_crawl_website_and_return_all_text(self):
         """Should crawl the website and linked HTML documents within the same domain."""
-        
+
         domain = "example.com"
         url = f"http://{domain}"
         link1 = f"http://{domain}/page1.html"

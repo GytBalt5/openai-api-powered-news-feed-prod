@@ -35,8 +35,11 @@ class AIQuestionAnsweringTestCase(TestCase):
         self.assertEqual(answer, "I don't know")
 
     def test_should_answer_question_mocking_example(self):
-        with patch('openaiapp.ai_question_answering.create_context') as mock_create_context, \
-             patch('openai.Completion.create') as mock_completion_create:
+        with patch(
+            "openaiapp.ai_question_answering.create_context"
+        ) as mock_create_context, patch(
+            "openai.Completion.create"
+        ) as mock_completion_create:
             mock_create_context.return_value = "context"
             mock_completion_create.return_value = {"choices": [{"text": "answer"}]}
             question = "What Matcha tea pron and cons?"
