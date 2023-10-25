@@ -1,0 +1,1 @@
+# TODO. Should be saved flatten embeddings of DF to the vector database in future.

@@ -1,11 +1,16 @@
 from abc import ABC, abstractmethod
 
+from django.conf import settings
+
 import openai
 from openai.embeddings_utils import distances_from_embeddings
 from pandas import DataFrame
 
 from openaiapp.text_preparation import generate_each_text_of_df_tokens_amount
 from openaiapp.embeddings import create_embedding
+
+
+openai.api_key = settings.OPENAI_API_KEY
 
 
 class AbstractAIQuestionAnswering(ABC):
