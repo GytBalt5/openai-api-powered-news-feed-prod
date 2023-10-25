@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 
 import numpy as np
 from pandas import DataFrame

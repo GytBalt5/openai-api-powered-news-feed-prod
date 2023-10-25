@@ -1,4 +1,4 @@
-from unittest import TestCase
+from django.test import TestCase
 
 from openaiapp.tokenizers import tokenize_text, decode_tokens
 
