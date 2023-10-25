@@ -70,7 +70,7 @@ class DataFrameTextPreparatorTestCase(TestCase):
 
     def test_should_correctly_generate_each_text_amount_of_tokens(self):
         """
-        Test that the function generates the correct number of tokens for each text in the DataFrame.
+        Test that the function generates the correct number of tokens for each text.
         """
         df = self.text_preparator.generate_tokens_amount()
         expected_df = DataFrame(
@@ -84,9 +84,9 @@ class DataFrameTextPreparatorTestCase(TestCase):
         self.assertIsInstance(df, DataFrame)
         self.assertEqual(expected_df.to_dict(), df.to_dict())
 
-    def test_should_shorten_texts_of_df(self):
+    def test_should_shorten_texts(self):
         """
-        Test that the function shortens the texts in the DataFrame to the specified maximum number of tokens.
+        Test that the function shortens the texts to the specified maximum number of tokens.
         """
         max_tokens = 30
         shortened_df = self.text_preparator.shorten_texts(max_tokens=max_tokens)

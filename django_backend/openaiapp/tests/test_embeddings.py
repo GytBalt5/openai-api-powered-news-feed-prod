@@ -3,7 +3,7 @@ from django.test import TestCase
 import numpy as np
 from pandas import DataFrame
 
-from openaiapp.embeddings import DataFrameEmbeddings, get_embeddings_object
+from openaiapp.embeddings import AbstractEmbeddings, get_embeddings_object
 
 
 class EmbeddingsTestCase(TestCase):
@@ -15,12 +15,12 @@ class EmbeddingsTestCase(TestCase):
         df = DataFrame({"text": self.texts})
         self.embeddings_obj = get_embeddings_object(data_object=df)
 
-    def test_should_embeddings_object_be_created(self):
+    def test_should_embeddings_instance_inherits_abstract(self):
         """
-        Test that creating an embeddings object with a DataFrame returns a DataFrameEmbeddings object.
+        Test that the embeddings instance is also an instance of the AbstractEmbeddings class.
         """
         obj = get_embeddings_object(data_object=DataFrame({"text": ["test"]}))
-        self.assertIsInstance(obj, DataFrameEmbeddings)
+        self.assertIsInstance(obj, AbstractEmbeddings)
 
     def test_should_raise_exception_with_unsupported_data_object(self):
         """ 

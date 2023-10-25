@@ -20,9 +20,9 @@ class AIQuestionAnsweringTestCase(TestCase):
         self.df = embeddings_object.flatten_embeddings()
         self.ai_qa = get_ai_question_answering_object(data_object=self.df)
 
-    def test_should_question_answering_instance_also_be_abstract(self):
+    def test_should_question_answering_instance_inherits_abstract(self):
         """
-        Test that the AIQuestionAnswering instance is also an instance of the AbstractAIQuestionAnswering class.
+        Test that the question answering instance is also an instance of the AbstractAIQuestionAnswering class.
         """
         self.assertIsInstance(self.ai_qa, AbstractAIQuestionAnswering)
 
