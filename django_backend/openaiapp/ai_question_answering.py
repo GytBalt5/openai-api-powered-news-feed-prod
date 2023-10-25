@@ -6,8 +6,8 @@ import openai
 from openai.embeddings_utils import distances_from_embeddings
 from pandas import DataFrame
 
-from openaiapp.text_preparation import generate_each_text_of_df_tokens_amount
-from openaiapp.embeddings import create_embedding
+from openaiapp.text_preparators import get_text_preparator_object
+from openaiapp.embeddings import get_embeddings_object
 
 
 openai.api_key = settings.OPENAI_API_KEY
@@ -73,10 +73,12 @@ class AIQuestionAnsweringBasedOnContext(AbstractAIQuestionAnswering):
         :param max_len: The maximum length of the context.
         :return: The context for the question.
         """
-        df = generate_each_text_of_df_tokens_amount(df=self.df)
+        text_preparator = get_text_preparator_object(data_object=self.df)
+        df = text_preparator.generate_tokens_amount()
 
         # Get the embeddings for the question.
-        q_embeddings = create_embedding(input=question)
+        embeddings_object = get_embeddings_object()
+        q_embeddings = embeddings_object.create_embedding(input=question)
 
         # Get the distances from the embeddings.
         df["distances"] = distances_from_embeddings(
@@ -126,3 +128,16 @@ class AIQuestionAnsweringBasedOnContext(AbstractAIQuestionAnswering):
             return response["choices"][0]["text"].strip()
         except Exception as e:
             raise Exception(f"Error generating answer: {str(e)}")
+
+
+def get_ai_question_answering_object(data_object) -> AbstractAIQuestionAnswering:
+    """
+    Get an AI question answering object for the given data object.
+
+    :param data_object: The data object to get an AI question answering object for.
+    :return: An instance of an AI question answering object.
+    :raises TypeError: If the data object is not supported.
+    """
+    if isinstance(data_object, DataFrame):
+        return AIQuestionAnsweringBasedOnContext(df=data_object)
+    raise TypeError("The data object is not supported.")

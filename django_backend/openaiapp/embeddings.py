@@ -8,7 +8,6 @@ from pandas import DataFrame
 
 
 openai.api_key = settings.OPENAI_API_KEY
-EMBEDDING_ENGINE = "text-embedding-ada-002"
 
 
 class AbstractEmbeddings(ABC):
@@ -17,9 +16,8 @@ class AbstractEmbeddings(ABC):
         pass
 
 
-class DataFrameEmbeddings(AbstractEmbeddings):
-    def __init__(self, df: DataFrame):
-        self.df = df
+class SimpleEmbeddings(AbstractEmbeddings):
+    EMBEDDING_ENGINE = "text-embedding-ada-002"
 
     def create_embedding(self, input: str):
         """
@@ -28,9 +26,15 @@ class DataFrameEmbeddings(AbstractEmbeddings):
         Args:
             input: The input text to create an embedding for.
         """
-        return openai.Embedding.create(input=input, engine=EMBEDDING_ENGINE)["data"][0]["embedding"]
+        return openai.Embedding.create(input=input, engine=self.EMBEDDING_ENGINE)["data"][0]["embedding"]
 
-    def create_embeddings_for_df_texts(self) -> DataFrame:
+
+class DataFrameEmbeddings(SimpleEmbeddings):
+    def __init__(self, df: DataFrame):
+        super().__init__()
+        self.df = df
+
+    def create_embeddings(self) -> DataFrame:
         """
         Create embeddings for the text column of the given DataFrame using the OpenAI API.
 
@@ -40,7 +44,7 @@ class DataFrameEmbeddings(AbstractEmbeddings):
         self.df["embeddings"] = self.df.text.apply(lambda x: self.create_embedding(input=x))
         return self.df
 
-    def flatten_embeddings_of_df(self) -> DataFrame:
+    def flatten_embeddings(self) -> DataFrame:
         """
         Flatten the embeddings column of the given DataFrame.
 
@@ -51,10 +55,12 @@ class DataFrameEmbeddings(AbstractEmbeddings):
         return self.df
 
 
-def get_embeddings_object(data_object):
+def get_embeddings_object(data_object=None) -> AbstractEmbeddings:
     """
     Get an embeddings object for the given data object.
     """
-    if isinstance(data_object, DataFrame):
+    if data_object is None:
+        return SimpleEmbeddings()
+    elif isinstance(data_object, DataFrame):
         return DataFrameEmbeddings(data_object)
     raise TypeError("The data object is not supported.")

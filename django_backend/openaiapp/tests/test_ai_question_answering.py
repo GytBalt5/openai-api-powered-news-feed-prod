@@ -4,8 +4,8 @@ from django.test import TestCase
 
 from pandas import DataFrame
 
-from openaiapp.embeddings import create_embeddings_of_df_text, flatten_embeddings_of_df
-from openaiapp.ai_question_answering import AbstractAIQuestionAnswering, AIQuestionAnsweringBasedOnContext
+from openaiapp.embeddings import get_embeddings_object
+from openaiapp.ai_question_answering import AbstractAIQuestionAnswering, get_ai_question_answering_object
 
 
 class AIQuestionAnsweringTestCase(TestCase):
@@ -15,9 +15,10 @@ class AIQuestionAnsweringTestCase(TestCase):
             "Fact-based news, exclusive video footage, photos and updated maps. Abra kadabra abra kadabra Csharp.",
         ]
         df = DataFrame({"text": self.texts})
-        df = create_embeddings_of_df_text(df=df)
-        self.df = flatten_embeddings_of_df(df=df)
-        self.ai_qa = AIQuestionAnsweringBasedOnContext(df=self.df)
+        embeddings_object = get_embeddings_object(data_object=df)
+        df = embeddings_object.create_embeddings()
+        self.df = embeddings_object.flatten_embeddings()
+        self.ai_qa = get_ai_question_answering_object(data_object=self.df)
 
     def test_should_question_answering_instance_also_be_abstract(self):
         """

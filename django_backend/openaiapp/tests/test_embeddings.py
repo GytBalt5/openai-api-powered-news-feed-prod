@@ -27,13 +27,13 @@ class EmbeddingsTestCase(TestCase):
         Test that creating an embeddings object with an unsupported data object raises a TypeError.
         """
         with self.assertRaises(TypeError):
-            get_embeddings_object(None)
+            get_embeddings_object(data_object=["a", "b"])
 
     def test_should_create_embedding_for_each_text_chunk(self):
         """
         Should create an embedding for each DataFrame text chunk.
         """
-        df = self.embeddings_obj.create_embeddings_for_df_texts()
+        df = self.embeddings_obj.create_embeddings()
 
         self.assertIsInstance(df, DataFrame)
         self.assertEqual(set(df.columns), set(["text", "embeddings"]))
@@ -60,8 +60,8 @@ class EmbeddingsTestCase(TestCase):
         """
         Should transform embeddings into numpy array of 1D.
         """
-        df = self.embeddings_obj.create_embeddings_for_df_texts()
-        df = self.embeddings_obj.flatten_embeddings_of_df()
+        df = self.embeddings_obj.create_embeddings()
+        df = self.embeddings_obj.flatten_embeddings()
 
         self.assertIsInstance(df, DataFrame)
         self.assertEqual(set(df.columns), set(["text", "embeddings"]))

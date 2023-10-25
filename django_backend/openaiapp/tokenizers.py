@@ -1,14 +1,27 @@
+from abc import ABC, abstractmethod
+
 import tiktoken
 
 
-# Load the cl100k_base tokenizer which is designed to work with the ada-002 model.
-TOKENIZER = tiktoken.get_encoding("cl100k_base")
+class Tokenizer(ABC):
+    @abstractmethod
+    def tokenize_text(self, text: str) -> list[list[int]]:
+        pass
+
+    @abstractmethod
+    def decode_tokens(self, tokens: list[int]) -> str:
+        pass
 
 
-def tokenize_text(text: str) -> list[list]:
-    return TOKENIZER.encode(text)
+class CL100KBaseTokenizer(Tokenizer):
+    def __init__(self):
+        self.tokenizer = tiktoken.get_encoding("cl100k_base")
+
+    def tokenize_text(self, text: str) -> list[list[int]]:
+        return self.tokenizer.encode(text)
+
+    def decode_tokens(self, tokens: list[int]) -> str:
+        return self.tokenizer.decode(tokens)
 
 
-def decode_tokens(tokens: list[int]) -> str:
-    """Decode the tokens into text."""
-    return TOKENIZER.decode(tokens)
+tokenizer = CL100KBaseTokenizer()
