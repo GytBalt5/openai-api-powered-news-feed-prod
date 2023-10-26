@@ -17,7 +17,7 @@ class OpenAIGeneratorOfNewsFeedTextAcceptanceTestCase(TestCase):
         """
         raise NotImplementedError
     
-    def should_break_down_text_into_tokens(self):
+    def test_should_break_down_text_into_tokens(self):
         """
         2. Should break down the text into tokens.
         """
