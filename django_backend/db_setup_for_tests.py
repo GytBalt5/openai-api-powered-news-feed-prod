@@ -2,7 +2,6 @@
 import os
 from pathlib import Path
 
-from utils.utils import get_settings_path
 from core.utils.database_config import (
     AUTH_DB_ALIAS,
     NEWS_FEED_DB_ALIAS,
@@ -27,7 +26,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.settings_for_tests")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.settings_for_testing")
 
     script = "manage.py"
     flag = "--database"
