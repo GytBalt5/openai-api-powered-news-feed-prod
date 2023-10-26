@@ -84,3 +84,9 @@ class EmbeddingsTestCase(TestCase):
             self.assertGreater(len(embedding), 0)
 
         self.assertEqual(self.texts, text_list)
+
+    def test_should_save_flatten_embeddings_to_vector_db(self):
+        """
+        Should save flatten embeddings to the vector database.
+        """ 
+        raise NotImplementedError
