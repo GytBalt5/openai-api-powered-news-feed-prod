@@ -50,8 +50,13 @@ class AIQuestionAnsweringBasedOnContext(AbstractAIQuestionAnswering):
     CONTEXT_MAX_LEN = 2048
     MAX_TOKENS = 256
 
-    def __init__(self, df: DataFrame, model: str = MODEL, 
-                 max_tokens: int = MAX_TOKENS, stop_sequence: str = None):
+    def __init__(
+        self,
+        df: DataFrame,
+        model: str = MODEL,
+        max_tokens: int = MAX_TOKENS,
+        stop_sequence: str = None,
+    ):
         """
         Initialize the AIQuestionAnswering object.
 

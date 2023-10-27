@@ -23,7 +23,7 @@ class EmbeddingsTestCase(TestCase):
         self.assertIsInstance(obj, AbstractEmbeddings)
 
     def test_should_raise_exception_with_unsupported_data_object(self):
-        """ 
+        """
         Test that creating an embeddings object with an unsupported data object raises a TypeError.
         """
         with self.assertRaises(TypeError):
@@ -88,5 +88,5 @@ class EmbeddingsTestCase(TestCase):
     def test_should_save_flatten_embeddings_to_vector_db(self):
         """
         Should save flatten embeddings to the vector database.
-        """ 
+        """
         raise NotImplementedError

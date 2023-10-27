@@ -24,7 +24,7 @@ class Article(models.Model):
 
     title = models.CharField(max_length=200)
     slug = AutoSlugField(
-        unique=True, 
+        unique=True,
         populate_from="title",
         unique_with=("topic_id", "title"),
     )

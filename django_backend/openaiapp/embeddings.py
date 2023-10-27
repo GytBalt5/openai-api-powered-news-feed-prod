@@ -26,7 +26,9 @@ class SimpleEmbeddings(AbstractEmbeddings):
         Args:
             input: The input text to create an embedding for.
         """
-        return openai.Embedding.create(input=input, engine=self.EMBEDDING_ENGINE)["data"][0]["embedding"]
+        return openai.Embedding.create(input=input, engine=self.EMBEDDING_ENGINE)[
+            "data"
+        ][0]["embedding"]
 
 
 class DataFrameEmbeddings(SimpleEmbeddings):
@@ -41,7 +43,9 @@ class DataFrameEmbeddings(SimpleEmbeddings):
         Returns:
             The DataFrame with an additional embeddings column containing the embeddings.
         """
-        self.df["embeddings"] = self.df.text.apply(lambda x: self.create_embedding(input=x))
+        self.df["embeddings"] = self.df.text.apply(
+            lambda x: self.create_embedding(input=x)
+        )
         return self.df
 
     def flatten_embeddings(self) -> DataFrame:

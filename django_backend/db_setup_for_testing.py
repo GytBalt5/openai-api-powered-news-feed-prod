@@ -26,7 +26,9 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.settings_for_testing")
+    os.environ.setdefault(
+        "DJANGO_SETTINGS_MODULE", "core.settings.settings_for_testing"
+    )
 
     script = "manage.py"
     flag = "--database"

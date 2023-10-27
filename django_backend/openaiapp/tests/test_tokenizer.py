@@ -5,7 +5,9 @@ from openaiapp.tokenizers import tokenizer
 
 class TokenizerTestCase(TestCase):
     def setUp(self):
-        self.sample_text = "Fact-based news, exclusive video footage, photos and updated maps."
+        self.sample_text = (
+            "Fact-based news, exclusive video footage, photos and updated maps."
+        )
         self.expected_tokens = [
             17873,
             6108,

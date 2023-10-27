@@ -30,7 +30,7 @@ class CrawlerTestCase(TestCase):
         spider.parse(response)
 
         expected_articles = [{"url": url, "text": "This is some sample text."}]
-        
+
         self.assertEqual(expected_articles, spider.articles)
 
     def test_should_crawl_website_and_return_all_text(self):
@@ -107,5 +107,5 @@ class CrawlerTestCase(TestCase):
             {"url": link2, "text": "This is some sample text."},
             {"url": link3, "text": "This is some sample text."},
         ]
-        
+
         self.assertEqual(expected_articles, spider.articles)

@@ -31,7 +31,7 @@ class ArticlesDBShardingBaseTestCase(TestCase):
         cls.user_id = create_super_user().id
 
         cls.topics = [
-            create_category(name=f"Name{idx + 1}", description=f"Desc{idx + 1}").id 
+            create_category(name=f"Name{idx + 1}", description=f"Desc{idx + 1}").id
             for idx in range(len(ARTICLES_DB_SHARDS))
         ]
 
@@ -125,7 +125,9 @@ class DBShardingCRUDTestCase(ArticlesDBShardingBaseTestCase):
             expected_db = self.article_router.db_for_read(
                 Article, hints={"topic_id": article.topic_id}
             )
-            updated_article = Article.objects.using(expected_db).filter(uid=article.uid).first()
+            updated_article = (
+                Article.objects.using(expected_db).filter(uid=article.uid).first()
+            )
             self.assertIsNotNone(updated_article)
             self.assertEqual(expected_title, updated_article.title)
 

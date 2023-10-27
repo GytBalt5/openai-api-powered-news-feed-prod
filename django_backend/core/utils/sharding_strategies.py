@@ -25,7 +25,7 @@ class ShardingModuloStrategy(AbstractShardingStrategy):
         """
         shard_index = uid % len(self.shards)
         return self.shards[shard_index]
-    
+
 
 class ShardingBasedOnTopicStrategy(AbstractShardingStrategy):
     """

@@ -1,6 +1,6 @@
 def save_flatten_embeddings_to_vector_db():
     """
-    # TODO. 
+    # TODO.
     Should be implemented in the future.
     Should save flatten embeddings to the vector database.
     """
@@ -9,7 +9,7 @@ def save_flatten_embeddings_to_vector_db():
 
 def get_vector_db_model():
     """
-    # TODO. 
+    # TODO.
     Should be implemented in the future.
     Get the vector database model.
 

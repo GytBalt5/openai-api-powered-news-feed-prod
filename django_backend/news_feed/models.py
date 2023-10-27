@@ -32,9 +32,9 @@ class Site(SingletonModel):
 
 class Category(models.Model):
     """
-    TODO. 
+    TODO.
     1. Need to rename the Category to the Topic.
-    2. Need to generate new databases (shards) for articles dynamically 
+    2. Need to generate new databases (shards) for articles dynamically
     when a new category is created.
     """
 
@@ -44,7 +44,7 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Temporary solution to limit the number of categories 
+        Temporary solution to limit the number of categories
         to the static number of article shards.
         """
         shards_count = len(ARTICLES_DB_SHARDS)

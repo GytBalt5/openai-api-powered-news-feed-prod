@@ -5,7 +5,10 @@ from django.test import TestCase
 from pandas import DataFrame
 
 from openaiapp.embeddings import get_embeddings_object
-from openaiapp.ai_question_answering import AbstractAIQuestionAnswering, get_ai_question_answering_object
+from openaiapp.ai_question_answering import (
+    AbstractAIQuestionAnswering,
+    get_ai_question_answering_object,
+)
 
 
 class AIQuestionAnsweringTestCase(TestCase):
@@ -47,7 +50,9 @@ class AIQuestionAnsweringTestCase(TestCase):
         ) as mock_completion_create:
             # Mock the create_context and Completion.create methods.
             mock_create_context.return_value = "context"
-            mock_completion_create.return_value = {"choices": [{"text": "I don't know"}]}
+            mock_completion_create.return_value = {
+                "choices": [{"text": "I don't know"}]
+            }
             question = "What Matcha tea pron and con?"
             answer = self.ai_qa.answer_question(question=question)
 

@@ -53,7 +53,10 @@ class SimpleTextPreparator(AbstractTextPreparator):
 
             if next_size == -1:  # the last sentence
                 chunks.append(current_chunk)
-            elif current_chunk_size + next_size > max_tokens and current_chunk_size <= max_tokens:
+            elif (
+                current_chunk_size + next_size > max_tokens
+                and current_chunk_size <= max_tokens
+            ):
                 chunks.append(current_chunk)
                 current_chunk = ""
                 current_chunk_size = 0
@@ -113,7 +116,9 @@ class DataFrameTextPreparator(SimpleTextPreparator):
         """
         Generate the token count for each text in the DataFrame.
         """
-        self.df["n_tokens"] = self.df.text.apply(lambda x: len(tokenizer.tokenize_text(x)))
+        self.df["n_tokens"] = self.df.text.apply(
+            lambda x: len(tokenizer.tokenize_text(x))
+        )
         return self.df
 
 
