@@ -2,21 +2,29 @@
 
 Harness the power of OpenAI's API with a state-of-the-art news-feed app. This robust multi-database solution is meticulously crafted using Django, Vue.js, and GraphQL, offering a scalable foundation for your projects.
 
-- **Python 3.11**
+## Prerequisites
+
+- Install the Python 3.11.
+- Install the Rust Programming Language.
+- Install the MySQL (the simplest solution - XAMPP).
+- Create a SQLite3 Database Folder: Create a folder named "sqlite3" in your Django backend directory and place all your databases inside it. You can find database aliases in the `django_backend/core/utils/database_config.py` file.
+
+NOTE. I am using the VSCODE for testing setup, running scripts from `launch.json`, etc.
 
 ## 🌟 Key Features
 
 - **Advanced Database Management Starter**: The application features a foundational database sharding configuration, ensuring efficient data distribution and optimal performance.
-- **Improved Django settings configuration**.
-- **Scripts for project management**.
-- **Python testing configuration and Jupyter notebooks for code analysis**.
+- **Improved Django Settings Configuration**.
+- **Project Management Scripts**.
+- **Python Testing Configuration and Jupyter Notebooks**: Set up Python testing and use Jupyter notebooks for code analysis.
+- **Web Page Text Scraping Crawler**.
+- **OpenAI Integration**: Basic integration for answering questions based on the most similar context.
 - **Robust Testing**: My commitment to reliability is unwavering.
 
 ## 🚀 What's Next?
 
-- **OpenAI Integration**: Stay tuned for upcoming features that will leverage OpenAI's API to daily generate news feeds.
 - **Google Authentication**: Stay tuned for the upcoming integration of Google-based registration and login for a smoother user experience.
-- **Robust Testing**: More tests will be soon.
+- **More Tests**: Expect additional tests to ensure application reliability.
 - **Continuous Improvements**: I am always on the lookout for areas of improvement and am actively working on bug fixes.
 
 ## 🔧 Installation & Setup
@@ -34,6 +42,8 @@ To utilize Google Cloud (GC) for image storage:
 ```bash
 mkdir creds
 ```
+
+### Backend Configuration:
 
 Backend Configuration (Linux).
 Initiate a virtual environment:
@@ -83,6 +93,8 @@ Start dev server.
 python manage.py runserver
 ```
 
+### Frontend Configuration:
+
 Frontend Configuration.
 Navigate to the frontend directory from the root and install the required packages:
 
@@ -97,7 +109,7 @@ Start the frontend development server:
 npm run serve
 ```
 
-## Visual Tour
+## Visual Tour:
 
 News Feed Page
 
