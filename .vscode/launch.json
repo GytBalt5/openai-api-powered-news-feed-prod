@@ -79,7 +79,7 @@
             "type": "python",
             "request": "launch",
             "python": "${workspaceFolder}/.venv/Scripts/python",
-            "program": "${workspaceFolder}/django_backend/db_setup_for_tests.py",
+            "program": "${workspaceFolder}/django_backend/db_setup_for_testing.py",
         },
     ]
 }

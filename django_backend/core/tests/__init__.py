@@ -1,1 +1,1 @@
-from core.utils.testing_setup import *
+from core.utils.setup_for_testing import *
