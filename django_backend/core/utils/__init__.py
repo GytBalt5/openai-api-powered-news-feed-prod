@@ -7,5 +7,6 @@ from core.utils.database_config import (
     ARTICLES_A_DB_ALIAS,
     ARTICLES_B_DB_ALIAS,
     ARTICLES_C_DB_ALIAS,
+    ARTICLES_DB_SHARDS,
 )
 from core.utils.secrets import get_google_secretmanager_secrets, get_secret
