@@ -10,10 +10,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 AUTH_DB_ALIAS = "default"
 NEWS_FEED_DB_ALIAS = "news_feed_db"
 
-# Three shards.
 ARTICLES_A_DB_ALIAS = "articles_a_db"
 ARTICLES_B_DB_ALIAS = "articles_b_db"
 ARTICLES_C_DB_ALIAS = "articles_c_db"
+
+ARTICLES_DB_SHARDS = {
+    1: ARTICLES_A_DB_ALIAS, 
+    2: ARTICLES_B_DB_ALIAS, 
+    3: ARTICLES_C_DB_ALIAS
+}
 
 
 def get_multi_databases_config(env=None, secrets=None):
@@ -76,9 +81,9 @@ def get_multi_databases_config_for_tests():
 
 def get_db_routers():
     return [
-        "core.utils.router.AuthRouter",
-        "core.utils.router.NewsFeedRouter",
-        "core.utils.router.ArticleRouter",
+        "core.utils.routers.AuthRouter",
+        "core.utils.routers.NewsFeedRouter",
+        "core.utils.routers.ArticleRouter",
     ]
 
 
