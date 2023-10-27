@@ -1,18 +1,19 @@
 from django.test import TestCase
 
 from articles.models import Article
-from core.utils.router import ArticleRouter
+from core.utils.sharding_strategies import get_sharding_strategy
+from core.utils.routers import ArticleRouter
 from core.utils import (
     ARTICLES_A_DB_ALIAS,
     ARTICLES_B_DB_ALIAS,
     ARTICLES_C_DB_ALIAS,
     AUTH_DB_ALIAS,
     NEWS_FEED_DB_ALIAS,
+    ARTICLES_DB_SHARDS,
 )
 
 
-def determine_expected_database_based_on_modulo_sharding(uid: int, shards: list):
-    return shards[uid % len(shards)]
+articles_sharding_strategy = get_sharding_strategy(shards=ARTICLES_DB_SHARDS)
 
 
 class DBRouterShardingTestCase(TestCase):
@@ -39,12 +40,10 @@ class DBRouterShardingTestCase(TestCase):
         """
         Router should select the correct db for write.
         """
-        for fake_uid in range(1, self.articles_amount + 1):
-            expected_db = determine_expected_database_based_on_modulo_sharding(
-                fake_uid, self.expected_db_alias
-            )
+        for topic_id, _ in ARTICLES_DB_SHARDS.items():
+            expected_db = articles_sharding_strategy.get_shard(topic_id=topic_id)
             selected_db = self.article_router.db_for_write(
-                Article, hints={"uid": fake_uid}
+                Article, hints={"topic_id": topic_id}
             )
             self.assertEqual(expected_db, selected_db)
 
@@ -52,12 +51,10 @@ class DBRouterShardingTestCase(TestCase):
         """
         Router should select the correct db for read.
         """
-        for fake_uid in range(1, self.articles_amount + 1):
-            expected_db = determine_expected_database_based_on_modulo_sharding(
-                fake_uid, self.expected_db_alias
-            )
+        for topic_id, _ in ARTICLES_DB_SHARDS.items():
+            expected_db = articles_sharding_strategy.get_shard(topic_id=topic_id)
             selected_db = self.article_router.db_for_read(
-                Article, hints={"uid": fake_uid}
+                Article, hints={"topic_id": topic_id}
             )
             self.assertEqual(expected_db, selected_db)
 
@@ -107,12 +104,12 @@ class DBRouterShardingTestCase(TestCase):
 
     def test_should_select_db_no_hints(self):
         """
-        Router should select the correct db without hints.
+        Router without hints should select the first database.
         """
         # Evaluate default selection for write operations.
         selected_db = self.article_router.db_for_write(Article)
-        self.assertEqual(ARTICLES_A_DB_ALIAS, selected_db)
+        self.assertEqual(articles_sharding_strategy.get_shard(topic_id=1), selected_db)
 
         # Evaluate default selection for read operations.
         selected_db = self.article_router.db_for_read(Article)
-        self.assertEqual(ARTICLES_A_DB_ALIAS, selected_db)
+        self.assertEqual(articles_sharding_strategy.get_shard(topic_id=1), selected_db)
