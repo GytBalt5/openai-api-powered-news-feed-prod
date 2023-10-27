@@ -27,30 +27,30 @@ from articles.utils import create_article
 
 def db_init_setup(user_id):
     print("user_id: ", user_id)
-    a_article_category_id = create_category("A-ART", "AArt db articles").id
-    b_article_category_id = create_category("B-ART", "BArt db articles").id
-    c_article_category_id = create_category("C-ART", "CArt db articles").id
+    a_article_topic_id = create_category("A-ART", "AArt db articles").id
+    b_article_topic_id = create_category("B-ART", "BArt db articles").id
+    c_article_topic_id = create_category("C-ART", "CArt db articles").id
     print(
         "category ids: ",
-        a_article_category_id,
-        b_article_category_id,
-        c_article_category_id,
+        a_article_topic_id,
+        b_article_topic_id,
+        c_article_topic_id,
     )
 
-    for idx, category_id in enumerate(
+    for idx, topic_id in enumerate(
         [
-            a_article_category_id,
-            b_article_category_id,
-            c_article_category_id,
-            a_article_category_id,
-            b_article_category_id,
-            c_article_category_id,
-            a_article_category_id,
-            b_article_category_id,
-            c_article_category_id,
-            a_article_category_id,
-            b_article_category_id,
-            c_article_category_id,
+            a_article_topic_id,
+            b_article_topic_id,
+            c_article_topic_id,
+            a_article_topic_id,
+            b_article_topic_id,
+            c_article_topic_id,
+            a_article_topic_id,
+            b_article_topic_id,
+            c_article_topic_id,
+            a_article_topic_id,
+            b_article_topic_id,
+            c_article_topic_id,
         ]
     ):
         p = create_article(
@@ -58,7 +58,7 @@ def db_init_setup(user_id):
             content=f"ARTICLE {idx + 1}",
             is_featured=True,
             is_published=True,
-            category_id=category_id,
+            topic_id=topic_id,
             user_id=user_id,
         )
         print(f"Article created: {p}")

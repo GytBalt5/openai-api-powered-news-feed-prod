@@ -31,8 +31,8 @@ class Query(graphene.ObjectType):
         return Category.objects.all()
 
     def resolve_articles_by_category(self, info, category):
-        category_id = Category.objects.get(slug__iexact=category).id
-        return Article.objects.filter(category_id=category_id).all()
+        topic_id = Category.objects.get(slug__iexact=category).id
+        return Article.objects.filter(topic_id=topic_id).all()
 
     def resolve_articles_by_user(self, info, username):
         user_id = User.objects.get(username__iexact=username).id

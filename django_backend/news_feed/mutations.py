@@ -1,3 +1,7 @@
+"""
+*** Mutation sends data to the database.
+"""
+
 from django.contrib.auth import get_user_model
 
 import graphene
@@ -12,11 +16,11 @@ from articles.models import Article
 User = get_user_model()
 
 
-# Mutation sends data to the database.
-
-
-# Customize the ObtainJSONWebToken behavior to include the user info.
 class ObtainJSONWebToken(graphql_jwt.JSONWebTokenMutation):
+    """
+    Customize the ObtainJSONWebToken behavior to include the user info.
+    """
+
     user = graphene.Field(UserType)
 
     @classmethod
@@ -83,20 +87,20 @@ class CreateArticle(graphene.Mutation):
 
     class Arguments:
         user_id = graphene.ID(required=True)
-        category_id = graphene.ID(required=True)
+        topic_id = graphene.ID(required=True)
         title = graphene.String(required=True)
         content = graphene.String(required=True)
         is_published = graphene.Boolean(required=True)
         is_featured = graphene.Boolean(required=True)
 
     def mutate(
-        self, info, user_id, category_id, title, content, is_published, is_featured
+        self, info, user_id, topic_id, title, content, is_published, is_featured
     ):
         user_id = User.objects.get(id=user_id).id
-        category_id = Category.objects.get(id=category_id).id
+        topic_id = Category.objects.get(id=topic_id).id
         article_obj = Article.objects.create(
             user_id=user_id,
-            category_id=category_id,
+            topic_id=topic_id,
             title=title,
             content=content,
             is_published=is_published,

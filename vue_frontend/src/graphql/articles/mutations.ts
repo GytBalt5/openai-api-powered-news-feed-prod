@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 export const CREATE_ARTICLE = gql`
   mutation (
     $userID: ID!
-    $categoryID: ID!
+    $topicID: ID!
     $title: String!
     $content: String!
     $isPublished: Boolean!
@@ -11,7 +11,7 @@ export const CREATE_ARTICLE = gql`
   ) {
     createArticle(
       userID: $userID
-      categoryID: $categoryID
+      topicID: $categoryID
       title: $title
       content: $content
       isPublished: $isPublished

@@ -1,14 +1,14 @@
 import gql from "graphql-tag";
 
 const ARTICLE_FIELDS = `
+    userId
+    topicId
     title
     slug
     content
     isPublished
     isFeatured
     createdAt
-    categoryId
-    userId
 `;
 
 export const ALL_ARTICLES = gql`
