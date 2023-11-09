@@ -1,4 +1,4 @@
-from news_feed.models import Category
+from news_feed.models import Topic
 
 
 def create_site():
@@ -6,6 +6,6 @@ def create_site():
     pass
 
 
-def create_category(name, description):
-    c = Category.objects.create(name=name, description=description)
+def create_topic(name, description):
+    c = Topic.objects.create(name=name, description=description)
     return c

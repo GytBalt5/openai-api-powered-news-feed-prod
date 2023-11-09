@@ -8,7 +8,7 @@ import graphene
 import graphql_jwt
 from graphene_file_upload.scalars import Upload
 
-from news_feed.models import Category
+from news_feed.models import Topic
 from news_feed.types import UserType, ArticleType
 from articles.models import Article
 
@@ -97,7 +97,7 @@ class CreateArticle(graphene.Mutation):
         self, info, user_id, topic_id, title, content, is_published, is_featured
     ):
         user_id = User.objects.get(id=user_id).id
-        topic_id = Category.objects.get(id=topic_id).id
+        topic_id = Topic.objects.get(id=topic_id).id
         article_obj = Article.objects.create(
             user_id=user_id,
             topic_id=topic_id,

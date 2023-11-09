@@ -3,8 +3,8 @@ from django.contrib.auth import get_user_model
 import graphene
 
 from articles.models import Article
-from news_feed.models import Site, Category
-from news_feed.types import ArticleType, CategoryType, UserType, SiteType
+from news_feed.models import Site, Topic
+from news_feed.types import ArticleType, TopicType, UserType, SiteType
 
 
 User = get_user_model()
@@ -15,11 +15,11 @@ class Query(graphene.ObjectType):
     current_user = graphene.Field(UserType, username=graphene.String())
 
     all_articles = graphene.List(ArticleType)
-    articles_by_category = graphene.List(ArticleType, category=graphene.String())
+    articles_by_topic = graphene.List(ArticleType, topic=graphene.String())
     articles_by_user = graphene.List(ArticleType, username=graphene.String())
     article_by_slug = graphene.Field(ArticleType, slug=graphene.String())
 
-    all_categories = graphene.List(CategoryType)
+    all_categories = graphene.List(TopicType)
 
     def resolve_site(self, info):
         return Site.objects.first()
@@ -28,10 +28,10 @@ class Query(graphene.ObjectType):
         return Article.objects.all()
 
     def resolve_all_categories(self, info):
-        return Category.objects.all()
+        return Topic.objects.all()
 
-    def resolve_articles_by_category(self, info, category):
-        topic_id = Category.objects.get(slug__iexact=category).id
+    def resolve_articles_by_topic(self, info, topic):
+        topic_id = Topic.objects.get(slug__iexact=topic).id
         return Article.objects.filter(topic_id=topic_id).all()
 
     def resolve_articles_by_user(self, info, username):

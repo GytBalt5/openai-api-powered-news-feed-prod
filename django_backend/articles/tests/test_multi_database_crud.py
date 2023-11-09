@@ -3,7 +3,7 @@ import random
 from django.test import TestCase
 
 from users.utils import create_super_user
-from news_feed.utils import create_category
+from news_feed.utils import create_topic
 from articles.utils import create_article
 from articles.models import Article
 from core.utils.routers import ArticleRouter
@@ -31,7 +31,7 @@ class ArticlesDBShardingBaseTestCase(TestCase):
         cls.user_id = create_super_user().id
 
         cls.topics = [
-            create_category(name=f"Name{idx + 1}", description=f"Desc{idx + 1}").id
+            create_topic(name=f"Name{idx + 1}", description=f"Desc{idx + 1}").id
             for idx in range(len(ARTICLES_DB_SHARDS))
         ]
 

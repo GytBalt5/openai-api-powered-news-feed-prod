@@ -19,3 +19,7 @@ def get_settings_path(prod=False):
 
     # Default to development settings path.
     return "core.settings.dev"
+
+
+def create_article_shard():
+    raise NotImplementedError

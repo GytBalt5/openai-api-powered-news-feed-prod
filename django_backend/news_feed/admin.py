@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from news_feed.models import Category, Site
+from news_feed.models import Topic, Site
 from articles.models import Article
 
 
@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ("username", "first_name", "last_name", "email", "date_joined")
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class TopicAdmin(admin.ModelAdmin):
     pass
 
 
@@ -22,5 +22,5 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Site)
 admin.site.register(User, UserAdmin)
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(Topic, TopicAdmin)
 admin.site.register(Article, ArticleAdmin)

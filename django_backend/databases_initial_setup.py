@@ -5,7 +5,7 @@ from pathlib import Path
 import django
 
 from core.utils.dotenv import load_env, get_env_value
-from utils.utils import get_settings_path
+from utils.general import get_settings_path
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -21,17 +21,17 @@ django.setup()
 
 
 from users.utils import create_super_user
-from news_feed.utils import create_category
+from news_feed.utils import create_topic
 from articles.utils import create_article
 
 
 def db_init_setup(user_id):
     print("user_id: ", user_id)
-    a_article_topic_id = create_category("A-ART", "AArt db articles").id
-    b_article_topic_id = create_category("B-ART", "BArt db articles").id
-    c_article_topic_id = create_category("C-ART", "CArt db articles").id
+    a_article_topic_id = create_topic("A-ART", "AArt db articles").id
+    b_article_topic_id = create_topic("B-ART", "BArt db articles").id
+    c_article_topic_id = create_topic("C-ART", "CArt db articles").id
     print(
-        "category ids: ",
+        "topic ids: ",
         a_article_topic_id,
         b_article_topic_id,
         c_article_topic_id,

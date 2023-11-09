@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from graphene_django import DjangoObjectType
 
-from news_feed.models import Category, Site
+from news_feed.models import Topic, Site
 from articles.models import Article
 
 
@@ -19,9 +19,9 @@ class UserType(DjangoObjectType):
         model = User
 
 
-class CategoryType(DjangoObjectType):
+class TopicType(DjangoObjectType):
     class Meta:
-        model = Category
+        model = Topic
 
 
 class ArticleType(DjangoObjectType):

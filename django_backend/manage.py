@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 
-from utils.utils import get_settings_path
+from utils.general import get_settings_path
 from core.utils.dotenv import load_env, get_env_value
 
 
