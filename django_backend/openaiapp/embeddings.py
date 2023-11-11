@@ -1,70 +1,75 @@
 from abc import ABC, abstractmethod
 
-from django.conf import settings
-
 import openai
 import numpy as np
 from pandas import DataFrame
 
 
-openai.api_key = settings.OPENAI_API_KEY
-
-
 class AbstractEmbeddings(ABC):
+    """
+    Abstract base class for creating embeddings.
+    """
+
     @abstractmethod
     def create_embedding(self, input: str):
+        """
+        Abstract method to create an embedding for the given input.
+
+        :param input: The input text to create an embedding for.
+        """
         pass
 
 
-class SimpleEmbeddings(AbstractEmbeddings):
-    EMBEDDING_ENGINE = "text-embedding-ada-002"
+class TextEmbeddings(AbstractEmbeddings):
+    """
+    Concrete class for creating text embeddings.
+    """
+
+    def __init__(self, embedding_engine: str):
+        self.embedding_engine = embedding_engine
 
     def create_embedding(self, input: str):
         """
         Create an embedding for the given input text using the OpenAI API.
 
-        Args:
-            input: The input text to create an embedding for.
+        :param input: The input text to create an embedding for.
+        :return: The embedding as a list of floats.
         """
-        return openai.Embedding.create(input=input, engine=self.EMBEDDING_ENGINE)[
-            "data"
-        ][0]["embedding"]
+        try:
+            response = openai.Embedding.create(input=input, engine=self.embedding_engine)
+            return response["data"][0]["embedding"]
+        except Exception as e:
+            raise RuntimeError(f"Error in creating embedding: {e}.")
 
 
-class DataFrameEmbeddings(SimpleEmbeddings):
-    def __init__(self, df: DataFrame):
-        super().__init__()
+class DataFrameEmbeddings(AbstractEmbeddings):
+    """
+    Concrete class for creating embeddings for a DataFrame.
+    """
+
+    def __init__(self, df: DataFrame, embedding_engine: str):
         self.df = df
+        self.embedding_engine = embedding_engine
 
     def create_embeddings(self) -> DataFrame:
         """
         Create embeddings for the text column of the given DataFrame using the OpenAI API.
 
-        Returns:
-            The DataFrame with an additional embeddings column containing the embeddings.
+        :return: The DataFrame with an additional 'embeddings' column containing the embeddings.
         """
-        self.df["embeddings"] = self.df.text.apply(
-            lambda x: self.create_embedding(input=x)
-        )
-        return self.df
+        try:
+            self.df["embeddings"] = self.df["text"].apply(
+                lambda x: TextEmbeddings(self.embedding_engine).create_embedding(x) if x else None
+            )
+            return self.df
+        except Exception as e:
+            raise RuntimeError(f"Error in creating DataFrame embeddings: {e}.")
 
     def flatten_embeddings(self) -> DataFrame:
         """
         Flatten the embeddings column of the given DataFrame.
 
-        Returns:
-            The DataFrame with the embeddings column flattened (numpy array).
+        :return: The DataFrame with the embeddings column flattened (numpy array).
         """
         self.df["embeddings"] = self.df["embeddings"].apply(np.array)
         return self.df
-
-
-def get_embeddings_object(data_object=None) -> AbstractEmbeddings:
-    """
-    Get an embeddings object for the given data object.
-    """
-    if data_object is None:
-        return SimpleEmbeddings()
-    elif isinstance(data_object, DataFrame):
-        return DataFrameEmbeddings(data_object)
-    raise TypeError("The data object is not supported.")
