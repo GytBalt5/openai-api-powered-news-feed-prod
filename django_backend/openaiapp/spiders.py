@@ -1,12 +1,13 @@
+from bs4 import BeautifulSoup
+
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
-from bs4 import BeautifulSoup
 
 
 class NewsSpider(CrawlSpider):
     name = "news_spider"
 
-    def __init__(self, domain=None, *args, **kwargs):
+    def __init__(self, domain: str = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.allowed_domains = [domain] if domain else []
         self.start_urls = kwargs.get("start_urls", [])
