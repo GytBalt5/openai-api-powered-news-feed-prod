@@ -1,62 +1,74 @@
-"""
-*
-*** TODO. 
-*** Need to execute created test cases from this global test file test case.
-*
-"""
+import unittest
 
 from django.test import TestCase
+from django.test.runner import DiscoverRunner
 
+from openaiapp.tests.unittest_crawler import CrawlerTestCase
+from openaiapp.tests.unittest_tokenizer import TokenizerTestCase
+from openaiapp.tests.unittest_text_preparator import (
+    SimpleTextPreparatorTestCase,
+    DataFrameTextPreparatorTestCase,
+)
+from openaiapp.tests.unittest_embeddings import EmbeddingsTestCase
+from openaiapp.tests.unittest_ai_question_answering import AIQuestionAnsweringTestCase
 from openaiapp.main import NewsFeedTextGenerator
 
 
 class OpenAIGeneratorOfNewsFeedTextAcceptanceTestCase(TestCase):
+    def run_tests_from_other_test_case(self, test_case_class):
+        test_suite = unittest.TestLoader().loadTestsFromTestCase(test_case_class)
+        test_runner = DiscoverRunner(verbosity=2)
+
+        result = test_runner.run_suite(test_suite)
+
+        # Check if any tests failed and print details.
+        if result.failures or result.errors:
+            return result, False
+        return result, True
+
     def test_should_crawl_website_and_return_all_text(self):
         """
         1. Should crawl the website and link HTML documents within the same domain.
         """
-        raise NotImplementedError
+        _, success = self.run_tests_from_other_test_case(CrawlerTestCase)
+        self.assertTrue(success, f"Test failed.")
 
     def test_should_break_down_text_into_tokens(self):
         """
         2. Should break down the text into tokens.
         """
-        raise NotImplementedError
+        _, success = self.run_tests_from_other_test_case(TokenizerTestCase)
+        self.assertTrue(success, f"Test failed.")
 
     def test_should_preprocess_text(self):
         """
         3. Should text be preprocessed (chunked + shortened).
         """
-        raise NotImplementedError
+        success = self.run_tests_from_other_test_case(SimpleTextPreparatorTestCase)
+        self.assertTrue(success, "Test failed.")
+        success = self.run_tests_from_other_test_case(DataFrameTextPreparatorTestCase)
+        self.assertTrue(success, "Test failed.")
 
-    def test_should_create_flatten_embeddings(self):
+    def test_should_create_embeddings(self):
         """
         4. Should be flattened embeddings created.
-        """
-        raise NotImplementedError
-
-    def test_should_save_flatten_embeddings_to_vector_db(self):
-        """
         TODO 1.
         Not implemented yet.
         5. Should be flattened embeddings saved to the vector database.
         """
-        raise NotImplementedError
+        _, success = self.run_tests_from_other_test_case(EmbeddingsTestCase)
+        self.assertTrue(success, f"Test failed.")
 
-    def test_should_find_most_similar_context_for_question(self):
+    def test_should_find_context_and_answer_question(self):
         """
         TODO 2.
         In the future needs to be changed from DataFrame to vector database.
         Should find the most similar context for the question from the vector database.
         6. Should find the most similar context for a question.
-        """
-        raise NotImplementedError
-
-    def test_should_generate_completion_that_answers_question(self):
-        """
         7. Should by using the most similar context generate a completion that answers a question.
         """
-        raise NotImplementedError
+        _, success = self.run_tests_from_other_test_case(AIQuestionAnsweringTestCase)
+        self.assertTrue(success, f"Test failed.")
 
     def test_should_generate_news_feed_text_10_key_points(self):
         """
