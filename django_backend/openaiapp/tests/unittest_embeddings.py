@@ -1,83 +1,85 @@
+from typing import List
+
 from django.test import TestCase
 
 import numpy as np
 from pandas import DataFrame
 
-from openaiapp.embeddings import AbstractEmbeddings, get_embeddings_object
+from openaiapp.embeddings import AbstractEmbeddings
+from openaiapp.factories import EmbeddingsFactory
 
 
 class EmbeddingsTestCase(TestCase):
     def setUp(self):
+        """
+        Set up the test case with sample texts, a DataFrame, and an embeddings object.
+        """
         self.texts = [
             "Fact-based news, exclusive video footage, photos and updated maps. Abra kadabra abra kadabra YEAH.",
             "Fact-based news, exclusive video footage, photos and updated maps. Abra kadabra abra kadabra YEAH.",
         ]
-        df = DataFrame({"text": self.texts})
-        self.embeddings_obj = get_embeddings_object(data_object=df)
+        self.df = DataFrame({"text": self.texts})
+        self.factory = EmbeddingsFactory()
+        self.embeddings_obj = self.factory.create_object(input_type=DataFrame)
 
-    def test_should_embeddings_instance_inherits_abstract(self):
+    def test_should_embeddings_instances_inherit_abstract(self):
         """
-        Test that the embeddings instance is also an instance of the AbstractEmbeddings class.
+        Test that the embeddings instances created by the factory inherit from AbstractEmbeddings.
         """
-        obj = get_embeddings_object(data_object=DataFrame({"text": ["test"]}))
+        obj = self.factory.create_object(input_type=DataFrame)
+        self.assertIsInstance(obj, AbstractEmbeddings)
+        obj = self.factory.create_object(input_type=str)
         self.assertIsInstance(obj, AbstractEmbeddings)
 
-    def test_should_raise_exception_with_unsupported_data_object(self):
+    def test_should_raise_exception_with_unsupported_input_type(self):
         """
-        Test that creating an embeddings object with an unsupported data object raises a TypeError.
+        Test that creating an embeddings object with an unsupported input type raises a TypeError.
         """
         with self.assertRaises(TypeError):
-            get_embeddings_object(data_object=["a", "b"])
+            self.factory.create_object(input_type=List)
 
     def test_should_create_embedding_for_each_text_chunk(self):
         """
-        Should create an embedding for each DataFrame text chunk.
+        Test that an embedding is created for each text chunk in the DataFrame.
         """
-        df = self.embeddings_obj.create_embeddings()
+        df = self.embeddings_obj.create_embeddings(input=self.df)
 
         self.assertIsInstance(df, DataFrame)
-        self.assertEqual(set(df.columns), set(["text", "embeddings"]))
+        self.assertEqual(set(df.columns), {"text", "embeddings"})
 
         text_list = df["text"].tolist()
         embedding_list = df["embeddings"].tolist()
 
-        # If pass than it creates embeddings for each text chunk.
         self.assertEqual(len(self.texts), len(embedding_list))
-
-        # General checks.
         self.assertIsInstance(text_list, list)
         self.assertIsInstance(embedding_list, list)
-
         self.assertIsInstance(text_list[0], str)
         for embedding in embedding_list:
-            self.assertIsInstance(embedding[0], float)
             self.assertIsInstance(embedding, list)
+            self.assertIsInstance(embedding[0], float)
             self.assertGreater(len(embedding), 0)
 
         self.assertEqual(self.texts, text_list)
 
     def test_should_flatten_embeddings_to_1d(self):
         """
-        Should transform embeddings into numpy array of 1D.
+        Test that embeddings are correctly flattened to a 1D numpy array.
         """
-        df = self.embeddings_obj.create_embeddings()
-        df = self.embeddings_obj.flatten_embeddings()
+        df = self.embeddings_obj.create_embeddings(input=self.df)
+        df = self.embeddings_obj.flatten_embeddings(input=df)
 
         self.assertIsInstance(df, DataFrame)
-        self.assertEqual(set(df.columns), set(["text", "embeddings"]))
+        self.assertEqual(set(df.columns), {"text", "embeddings"})
 
         text_list = df["text"].tolist()
         embedding_list = df["embeddings"].tolist()
 
-        # If pass than it flattens embeddings to 1D.
         for embedding in embedding_list:
             self.assertIsInstance(embedding, np.ndarray)
             self.assertEqual(embedding.ndim, 1)
 
-        # General checks.
         self.assertIsInstance(text_list, list)
         self.assertIsInstance(embedding_list, list)
-
         self.assertIsInstance(text_list[0], str)
         for embedding in embedding_list:
             self.assertIsInstance(embedding[0], float)
@@ -87,6 +89,6 @@ class EmbeddingsTestCase(TestCase):
 
     def test_should_save_flatten_embeddings_to_vector_db(self):
         """
-        Should save flatten embeddings to the vector database.
+        Test that flattened embeddings are correctly saved to the vector database.
         """
         raise NotImplementedError

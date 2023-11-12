@@ -8,7 +8,7 @@ from openaiapp.spiders import NewsSpider
 class CrawlerTestCase(TestCase):
     def test_should_raise_unsupported_error_for_parsing_not_html(self):
         """
-        Test that the spider raises an UnsupportedError when trying to parse a non-HTML response.
+        Test that the spider raises an UnsupportedError when attempting to parse a non-HTML response.
         """
         raise NotImplementedError
 
@@ -21,7 +21,6 @@ class CrawlerTestCase(TestCase):
         body = "<html><body><p>This is some sample text.</p></body></html>"
         headers = {"Content-Type": "text/html"}
 
-        # Creating a mock HTTP response with the sample HTML content.
         response = HtmlResponse(
             url=url, body=body.encode("utf-8"), headers=headers, encoding="utf-8"
         )
@@ -30,12 +29,11 @@ class CrawlerTestCase(TestCase):
         spider.parse(response)
 
         expected_articles = [{"url": url, "text": "This is some sample text."}]
-
         self.assertEqual(expected_articles, spider.articles)
 
     def test_should_crawl_website_and_return_all_text(self):
         """
-        Should crawl the website and linked HTML documents within the same domain.
+        Test that the spider crawls the website and linked HTML documents within the same domain, returning all text.
         """
         domain = "example.com"
         url = f"http://{domain}"
@@ -44,12 +42,11 @@ class CrawlerTestCase(TestCase):
         link3 = "/page3.html"
         sharp_link = "#"
         mailto_link = "mailto:johnbrawo1231@gg123mail.com"
-        js_link = f"/file.js"
+        js_link = "/file.js"
         other_link = "http://www.other.com"
 
         spider = NewsSpider(domain=domain, start_urls=[url])
 
-        # Define URLs and corresponding bodies.
         url_bodies = [
             (
                 url,
@@ -89,7 +86,6 @@ class CrawlerTestCase(TestCase):
             ),
         ]
 
-        # Create mock HTTP responses with sample HTML content.
         responses = [
             HtmlResponse(
                 url=url, body=body.encode("utf-8"), headers=headers, encoding="utf-8"
@@ -97,7 +93,6 @@ class CrawlerTestCase(TestCase):
             for url, body, headers in url_bodies
         ]
 
-        # Call the spider's parse methods for mock responses.
         for response in responses:
             spider.parse(response)
 
