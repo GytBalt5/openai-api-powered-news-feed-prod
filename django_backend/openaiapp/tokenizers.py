@@ -6,66 +6,71 @@ import tiktoken
 
 class AbstractTokenizer(ABC):
     """
-    Abstract base class for a tokenizer.
+    Abstract base class for tokenizers.
+    Defines the structure for tokenizing and decoding text.
     """
 
     @abstractmethod
     def tokenize_text(self, text: str) -> List[List[int]]:
         """
-        Abstract method to tokenize a given text.
+        Tokenize the given text.
 
-        :param text: The text to be tokenized.
-        :return: A list of lists of token IDs.
+        :param text: Text to be tokenized.
+        :return: A list of lists containing token IDs.
         """
         pass
 
     @abstractmethod
     def decode_tokens(self, tokens: List[int]) -> str:
         """
-        Abstract method to decode a list of token IDs back to text.
+        Decode a list of token IDs back into text.
 
-        :param tokens: A list of token IDs.
-        :return: The decoded text.
+        :param tokens: List of token IDs.
+        :return: Decoded text.
         """
         pass
 
 
 class Tokenizer(AbstractTokenizer):
     """
-    Concrete implementation of a tokenizer.
+    A concrete implementation of the AbstractTokenizer.
+    Utilizes the 'tiktoken' library for tokenization and decoding.
     """
 
     def __init__(self, encoding: str):
         """
-        Initialize the tokenizer with a specific encoding.
+        Initialize the tokenizer with the specified encoding.
 
-        :param encoding: The encoding to be used by the tokenizer.
+        :param encoding: Encoding to use for the tokenizer.
+        :raises ValueError: If the specified encoding is not supported.
         """
         try:
             self.tokenizer = tiktoken.get_encoding(encoding)
         except Exception as e:
-            raise ValueError(f"Failed to initialize tokenizer with encoding '{encoding}': {e}.")
+            raise ValueError(f"Initialization error with encoding '{encoding}': {e}")
 
     def tokenize_text(self, text: str) -> List[List[int]]:
         """
-        Tokenize a given text.
+        Tokenize the provided text.
 
-        :param text: The text to be tokenized.
+        :param text: Text to tokenize.
         :return: A list of lists of token IDs.
+        :raises RuntimeError: If tokenization fails.
         """
         try:
             return self.tokenizer.encode(text)
         except Exception as e:
-            raise RuntimeError(f"Error during tokenization: {e}.")
+            raise RuntimeError(f"Tokenization error: {e}")
 
     def decode_tokens(self, tokens: List[int]) -> str:
         """
-        Decode a list of token IDs back to text.
+        Decode the provided list of token IDs back to text.
 
-        :param tokens: A list of token IDs.
-        :return: The decoded text.
+        :param tokens: List of token IDs.
+        :return: Decoded text.
+        :raises RuntimeError: If decoding fails.
         """
         try:
             return self.tokenizer.decode(tokens)
         except Exception as e:
-            raise RuntimeError(f"Error during token decoding: {e}.")
+            raise RuntimeError(f"Decoding error: {e}")

@@ -3,6 +3,7 @@ from django.db import models
 from autoslug import AutoSlugField
 
 from core.utils import ARTICLES_DB_SHARDS
+
 # TODO. Need to write a test for the create_article_shard function before implementing it.
 # from utils.general import create_article_shard
 
@@ -11,7 +12,7 @@ class SingletonModel(models.Model):
     """
     An abstract base class model that representing a singleton instance.
     """
-    
+
     class Meta:
         abstract = True
 
@@ -29,7 +30,7 @@ class Site(SingletonModel):
     """
     Model representing a singleton instance of the site's basic information.
     """
-    
+
     name = models.CharField(max_length=200)
     description = models.TextField()
     logo = models.ImageField(upload_to="site/logo/")
@@ -47,7 +48,7 @@ class Topic(models.Model):
     Model representing a topic with a unique slug and description.
     Topics are used to categorize articles or content within the site.
     """
-    
+
     name = models.CharField(max_length=200)
     slug = AutoSlugField(populate_from="name", unique=True)
     description = models.TextField()
@@ -62,7 +63,7 @@ class Topic(models.Model):
         shards_count = len(ARTICLES_DB_SHARDS)
         if Topic.objects.count() >= shards_count:
             raise Exception(f"Only {shards_count} topics can be created.")
-        
+
         # Check if the object is new and doesn't have a primary key yet.
         # if not self.pk:
         #     create_article_shard()
