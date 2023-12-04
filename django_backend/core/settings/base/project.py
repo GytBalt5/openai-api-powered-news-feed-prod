@@ -1,13 +1,10 @@
 import os
-from pathlib import Path
 
 from core.utils.dotenv import load_env, get_env_value
+from core import BASE_DIR
 
 
-# Determine the base directory of the project.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent
+PROJECT_ROOT = BASE_DIR.parent
 VUE_FRONTEND_DIR = os.path.join(PROJECT_ROOT, "vue_frontend")
 VUE_STATIC_DIR = os.path.join(VUE_FRONTEND_DIR, "dist")
 

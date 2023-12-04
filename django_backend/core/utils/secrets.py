@@ -1,6 +1,5 @@
 import os
 import json
-from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -8,9 +7,8 @@ from core.utils.dotenv import load_env, get_env_value
 
 from google.cloud import secretmanager
 from google.oauth2 import service_account
+from core import BASE_DIR
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env_path = os.path.join(BASE_DIR, ".env")
 load_env(env_path)

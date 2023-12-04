@@ -1,11 +1,9 @@
 import os
-from pathlib import Path
 
 from core.utils.dotenv import load_env, get_env_value
 from core.utils.secrets import get_secret
+from core import BASE_DIR
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 AUTH_DB_ALIAS = "default"
 NEWS_FEED_DB_ALIAS = "news_feed_db"

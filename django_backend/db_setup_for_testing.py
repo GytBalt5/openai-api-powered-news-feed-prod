@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-from pathlib import Path
 
 from core.utils.database_config import (
     AUTH_DB_ALIAS,
@@ -9,9 +8,6 @@ from core.utils.database_config import (
     ARTICLES_B_DB_ALIAS,
     ARTICLES_C_DB_ALIAS,
 )
-
-
-BASE_DIR = Path(__file__).resolve().parent
 
 
 def main():

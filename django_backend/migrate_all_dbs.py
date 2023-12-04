@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-from pathlib import Path
 
 from utils.general import get_settings_path
 from core.utils.dotenv import load_env, get_env_value
@@ -11,9 +10,8 @@ from core.utils.database_config import (
     ARTICLES_B_DB_ALIAS,
     ARTICLES_C_DB_ALIAS,
 )
+from core import BASE_DIR
 
-
-BASE_DIR = Path(__file__).resolve().parent
 
 env_path = os.path.join(BASE_DIR, ".env")
 load_env(env_path)

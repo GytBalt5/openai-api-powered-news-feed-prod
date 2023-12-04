@@ -2,6 +2,7 @@ import os
 
 from core.settings.base import *
 from core.utils import get_multi_databases_config, get_db_routers
+from core import BASE_DIR
 
 
 # SECURITY WARNING: keep the secret key used in production secret!

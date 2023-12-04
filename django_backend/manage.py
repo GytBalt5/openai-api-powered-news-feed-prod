@@ -2,13 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from pathlib import Path
 
 from utils.general import get_settings_path
 from core.utils.dotenv import load_env, get_env_value
+from core import BASE_DIR
 
-
-BASE_DIR = Path(__file__).resolve().parent
 
 env_path = os.path.join(BASE_DIR, ".env")
 load_env(env_path)
